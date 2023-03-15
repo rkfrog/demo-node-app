@@ -16,7 +16,7 @@ git clone https://github.com/rkfrog/demo-node-app.git
 cd demo-node-app
 docker run --rm -it --entrypoint /bin/bash --name demo-node-app -p 3000:3000 -v $(pwd)/:/demo-node-app/ node:lts
 cd /demo-node-app/
-./startup.sh
+./startup.sh or DEBUG=demo-node-app:* npm start
 ```
 
 ###  Publish to Artifactory
