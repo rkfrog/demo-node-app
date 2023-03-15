@@ -1,18 +1,26 @@
 {
   "name": "demo-node-app",
-  "version": "1.0.0",
+  "version": "v1.0.0",
   "description": "demo-node-express-app",
   "private": true,
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "patch": "npm version patch -m \"Upgrade to %s for reasons\"",
+    "minor": "npm version minor -m \"Upgrade to %s for reasons\"",
+    "major": "npm version major -m \"Upgrade to %s for reasons\""
   },
+  "publishConfig": {
+    "registry":"https://roskad.jfrog.io/artifactory/api/npm/demonode-npm-dev-local/"
+  },
+  "files": ["bin","public","routes","test","views","app.js","package.json","README.md","startup.sh"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rkfrog/demo-node-app.git"
   },
-  "author": "Roshan Kadasani",
-  "license": "ISC",
+  "author": "Roshan Kadasani <roshank@jfrog.com>",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/rkfrog/demo-node-app/issues"
   },
