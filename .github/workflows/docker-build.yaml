@@ -29,11 +29,12 @@ jobs:
       - name: List npm config
         run: npm config ls -l
       # - name: Authenticate with private NPM package
-      #   run: echo "//roskad.jfrog.io/artifactory/api/npm/demonode-npm-dev-virtual/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+      #   run: echo "//roskad.jfrog.io/artifactory/api/npm/demonode-npm-dev-virtual/:_authToken=${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }} always-auth=true" > ~/.npmrc
       - name: Install dependencies
-        run: npm install
+        run: npm clean-install - ignore-scripts
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
+
       # - name: Run test
       #   run: npm test
       - name: Bump version
