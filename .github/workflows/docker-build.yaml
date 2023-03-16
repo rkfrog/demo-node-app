@@ -27,7 +27,15 @@ jobs:
   push-to-repo:
     runs-on: ubuntu-20.04
     steps:
-      - name: List files in the repository
+      - run: |
+          echo "The job was triggered by a ${{ github.event_name }} event."
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - run: |
+          echo "The ${{ github.repository }} repository has been cloned to the runner."
+      - name: Show current directory
         run: |
           pwd
+      - name: List files in the repository
+        run: |
           ls -ltrh ${{ github.workspace }}
