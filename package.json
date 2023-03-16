@@ -11,7 +11,7 @@
     "major": "npm version major -m \"Upgrade to %s for reasons\" --no-git-tag-version --no-commit-hooks"
   },
   "publishConfig": {
-    "registry": "https://roskad.jfrog.io/artifactory/api/npm/demonode-npm-dev-local/"
+    "registry": "https://roskad.jfrog.io/artifactory/api/npm/demonode-npm-dev-virtual/"
   },
   "files": [
     "bin",
