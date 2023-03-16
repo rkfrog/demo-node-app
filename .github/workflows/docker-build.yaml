@@ -25,6 +25,7 @@ jobs:
         with: 
           node-version: "18.5.0"
           registry-url: 'https://roskad.jfrog.io/artifactory/api/npm/demonode-npm-dev-virtual/'
+          always-auth: true
       - name: List npm config
         run: npm config ls -l
       # - name: Authenticate with private NPM package
