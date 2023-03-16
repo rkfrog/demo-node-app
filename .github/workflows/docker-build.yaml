@@ -24,17 +24,25 @@ jobs:
         uses: actions/setup-node@v3
         with: 
           node-version: "18.5.0"
-          registry-url: 'https://roskad.jfrog.io/artifactory/api/npm/demonode-npm-dev-virtual/'
+          # registry-url: 'https://roskad.jfrog.io/artifactory/api/npm/demonode-npm-dev-virtual/'
           always-auth: true
+      - name: Authenticate with private NPM package
+        run: |
+          echo "@<SCOPE>:registry=https://$REPO_URL/
+          //$REPO_URL/:_password=${{ secrets.NODE_AUTH_TOKEN }}
+          //$REPO_URL/:username=$USERNAME
+          //$REPO_URL/:email=$USERNAME
+          //$REPO_URL/:always-auth=true" > ~/.npmrc
+        env:
+          REPO_URL: ${{ env.RK_JRT_NPM_VIRTUAL_REPO_URL }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
+          USERNAME: ${{ env.RK_JRT_REPO_USERNAME }}
       - name: List npm config
         run: npm config ls -l
-      # - name: Authenticate with private NPM package
-      #   run: echo "//roskad.jfrog.io/artifactory/api/npm/demonode-npm-dev-virtual/:_authToken=${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }} always-auth=true" > ~/.npmrc
       - name: Install dependencies
         run: npm install
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
-
+        # env:
+        #   NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
       # - name: Run test
       #   run: npm test
       - name: Bump version
