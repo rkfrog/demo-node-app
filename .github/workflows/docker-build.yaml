@@ -19,10 +19,10 @@
 
 name: demo-node-app-docker-build
 on:
-  # push:
-  #   branches:
-  #     - 'dev'
-  workflow_dispatch
+  push:
+    branches:
+      - 'dev'
+  # workflow_dispatch
 jobs:
   push-to-repo:
     runs-on: ubuntu-20.04
