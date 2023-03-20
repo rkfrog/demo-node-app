@@ -31,7 +31,7 @@ jobs:
           always-auth: true
       - name: Authenticate with private NPM package
         run: |
-          envs
+          printenv
           echo "@<SCOPE>:registry=https://$REPO_URL/
           //$REPO_URL/:_password=${{ secrets.NODE_AUTH_TOKEN }}
           //$REPO_URL/:username=$USERNAME
