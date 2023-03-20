@@ -6,11 +6,6 @@ on:
       - 'dev'
   workflow_dispatch:
 
-env:
-  REPO_URL: ${{ env.RK_JRT_NPM_VIRTUAL_REPO_URL }}
-  NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
-  USERNAME: ${{ env.RK_JRT_REPO_USERNAME }}
-
 jobs:
   push-to-repo:
     runs-on: ubuntu-20.04
@@ -42,10 +37,10 @@ jobs:
           //$REPO_URL/:username=$USERNAME
           //$REPO_URL/:email=$USERNAME
           //$REPO_URL/:always-auth=true" > ~/.npmrc
-        # env:
-        #   REPO_URL: ${{ env.RK_JRT_NPM_VIRTUAL_REPO_URL }}
-        #   NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
-        #   USERNAME: ${{ env.RK_JRT_REPO_USERNAME }}
+        env:
+          REPO_URL: ${{ env.RK_JRT_NPM_VIRTUAL_REPO_URL }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
+          USERNAME: ${{ env.RK_JRT_REPO_USERNAME }}
       - name: List npm config
         run: npm config ls -l
       - name: Install dependencies
