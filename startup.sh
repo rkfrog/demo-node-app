@@ -1,8 +1,8 @@
 #!/bin/bash
 
 echo "Installing packages..."
+npm install -g express-generator mocha
 npm install
-npm install -g express-generator
 
 echo ""
 echo "Node version: " $(node -v)
