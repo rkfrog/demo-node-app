@@ -28,19 +28,6 @@ jobs:
           node-version: "18.5.0"
           registry-url: 'https://roskad.jfrog.io/artifactory/api/npm/demonode-npm-dev-virtual/'
           always-auth: true
-          email: 'roshank@jfrog.com'
-      # - name: Authenticate with private NPM package
-      #   run: |
-      #     printenv
-      #     echo "@<SCOPE>:registry=https://$REPO_URL/
-      #     //$REPO_URL/:_password=${{ secrets.NODE_AUTH_TOKEN }}
-      #     //$REPO_URL/:username=$USERNAME
-      #     //$REPO_URL/:email=$USERNAME
-      #     //$REPO_URL/:always-auth=true" > ~/.npmrc
-      #   env:
-      #     REPO_URL: ${{ env.RK_JRT_NPM_VIRTUAL_REPO_URL }}
-      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
-      #     USERNAME: ${{ env.RK_JRT_REPO_USERNAME }}
       - name: List npm config
         run: npm config ls -l
       - name: Install dependencies
@@ -52,4 +39,4 @@ jobs:
       - name: Bump version
         run: npm run minor
       - name: Publish
-        run: npm publish --dry-run
+        run: npm publish
