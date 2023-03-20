@@ -1,0 +1,46 @@
+name: demo-node-app-npm-publish
+
+on:
+  push:
+    branches:
+      - 'master'
+  workflow_dispatch:
+
+jobs:
+  push-to-repo:
+    runs-on: ubuntu-20.04
+    steps:
+      - run: |
+          echo "The job was triggered by a ${{ github.event_name }} event."
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - run: |
+          echo "${{ github.repository }} repository has been cloned to the runner."
+      - name: Show current directory
+        run: |
+          pwd
+      - name: List files in the repository
+        run: |
+          ls -ltrh ${{ github.workspace }}
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with: 
+          node-version: "18.5.0"
+          registry-url: 'https://roskad.jfrog.io/artifactory/api/npm/demonode-npm-dev-virtual/'
+          always-auth: true
+      - name: List NPM config
+        run: npm config ls -l
+      - name: Install dependencies
+        run: npm install
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
+      # - name: Run test
+      #   run: npm test
+      - name: NPM bump version
+        run: npm run $BUMP_VERSION
+        env:
+          BUMP_VERSION: "patch"
+      - name: NPM publish
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
