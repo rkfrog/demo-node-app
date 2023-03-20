@@ -40,3 +40,5 @@ jobs:
         run: npm run minor
       - name: Publish
         run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
