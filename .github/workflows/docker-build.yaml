@@ -22,7 +22,6 @@ jobs:
       - name: List files in the repository
         run: |
           ls -ltrh ${{ github.workspace }}
-          envs
       - name: Use Node.js
         uses: actions/setup-node@v3
         with: 
