@@ -26,10 +26,10 @@ jobs:
         uses: actions/setup-node@v3
         with: 
           node-version: "18.5.0"
-          registry-url: "https://$REPO_URL }}"
+          registry-url: "https://${{ env.RK_JRT_NPM_VIRTUAL_REPO_URL }}"
           always-auth: true
-        env:
-          REPO_URL: ${{ env.RK_JRT_NPM_VIRTUAL_REPO_URL }}
+        # env:
+        #   REPO_URL: ${{ env.RK_JRT_NPM_VIRTUAL_REPO_URL }}
       # - name: Authenticate with private NPM package
       #   run: |
       #     printenv
