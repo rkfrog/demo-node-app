@@ -4,10 +4,67 @@ on:
   push:
     branches:
       - 'dev'
+      # - 'main'
   workflow_dispatch:
 
 jobs:
-  push-to-repo:
+  # push-to-repo:
+  #   runs-on: ubuntu-20.04
+  #   steps:
+  #     - run: |
+  #         echo "The job was triggered by a ${{ github.event_name }} event."
+  #     - name: Check out repository code
+  #       uses: actions/checkout@v3
+  #     - run: |
+  #         echo "${{ github.repository }} repository has been cloned to the runner."
+  #     - name: Show current directory
+  #       run: |
+  #         pwd
+  #     - name: List files in the repository
+  #       run: |
+  #         ls -ltrh ${{ github.workspace }}
+  #     - name: Use Node.js
+  #       uses: actions/setup-node@v3
+  #       with: 
+  #         node-version: "18.5.0"
+  #         registry-url: 'https://roskad.jfrog.io/artifactory/api/npm/demonode-npm-dev-virtual/'
+  #         always-auth: true
+  #     - name: List NPM config
+  #       run: npm config ls -l
+  #     - name: Install dependencies
+  #       run: npm ci
+  #       env:
+  #         NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
+  #     # - name: Run test
+  #     #   run: npm test
+  #     - name: NPM bump version
+  #       run: npm run $BUMP_VERSION
+  #       env:
+  #         BUMP_VERSION: "patch"
+  #     - name: NPM publish
+  #       run: npm publish --dry-run
+  #       env:
+  #         NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
+  #     - name: Capture build version
+  #       run: echo NPM_PACKAGE_BUILD_VERSION=$(cat package.json | jq -r ."version") >> $GITHUB_ENV
+  #     - name: Login to JFrog Docker repo
+  #       uses: docker/login-action@v2
+  #       with:
+  #         registry: roskad.jfrog.io
+  #         username: ${{ secrets.JF_RK_USERNAME }}
+  #         password: ${{ secrets.JF_RK_TOKEN }}
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v2
+  #     - name: Build and push
+  #       uses: docker/build-push-action@v4
+  #       with:
+  #         context: .
+  #         file: ./Dockerfile
+  #         push: true
+  #         tags: roskad.jfrog.io/demonode-docker-virtual/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
+  #         secrets: |
+  #           GIT_AUTH_TOKEN=${{ secrets.JF_RK_TOKEN }}
+  jcli-test:
     runs-on: ubuntu-20.04
     steps:
       - run: |
@@ -28,39 +85,42 @@ jobs:
           node-version: "18.5.0"
           registry-url: 'https://roskad.jfrog.io/artifactory/api/npm/demonode-npm-dev-virtual/'
           always-auth: true
-      - name: List NPM config
-        run: npm config ls -l
-      - name: Install dependencies
-        run: npm ci
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
-      # - name: Run test
-      #   run: npm test
-      - name: NPM bump version
-        run: npm run $BUMP_VERSION
-        env:
-          BUMP_VERSION: "patch"
-      - name: NPM publish
-        run: npm publish --dry-run
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
-      - name: Capture build version
-        run: echo NPM_PACKAGE_BUILD_VERSION=$(cat package.json | jq -r ."version") >> $GITHUB_ENV
-      - name: Login to JFrog Docker repo
-        uses: docker/login-action@v2
-        with:
-          registry: roskad.jfrog.io
-          username: ${{ secrets.JF_RK_USERNAME }}
-          password: ${{ secrets.JF_RK_TOKEN }}
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - name: Build and push
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: roskad.jfrog.io/demonode-docker-virtual/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
-          secrets: |
-            GIT_AUTH_TOKEN=${{ secrets.JF_RK_TOKEN }}
-      
+      - name:  Jfrog cli version
+        uses: jfrog/setup-jfrog-cli@v3
+        run: |
+          jf --version
+      # - name: List NPM config
+      #   run: npm config ls -l
+      # - name: Install dependencies
+      #   run: npm ci
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
+      # # - name: Run test
+      # #   run: npm test
+      # - name: NPM bump version
+      #   run: npm run $BUMP_VERSION
+      #   env:
+      #     BUMP_VERSION: "patch"
+      # - name: NPM publish
+      #   run: npm publish --dry-run
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
+      # - name: Capture build version
+      #   run: echo NPM_PACKAGE_BUILD_VERSION=$(cat package.json | jq -r ."version") >> $GITHUB_ENV
+      # - name: Login to JFrog Docker repo
+      #   uses: docker/login-action@v2
+      #   with:
+      #     registry: roskad.jfrog.io
+      #     username: ${{ secrets.JF_RK_USERNAME }}
+      #     password: ${{ secrets.JF_RK_TOKEN }}
+      # - name: Set up Docker Buildx
+      #   uses: docker/setup-buildx-action@v2
+      # - name: Build and push
+      #   uses: docker/build-push-action@v4
+      #   with:
+      #     context: .
+      #     file: ./Dockerfile
+      #     push: true
+      #     tags: roskad.jfrog.io/demonode-docker-virtual/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
+      #     secrets: |
+      #       GIT_AUTH_TOKEN=${{ secrets.JF_RK_TOKEN }}
