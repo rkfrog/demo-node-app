@@ -14,7 +14,7 @@ jobs:
     steps:
       - run: |
           echo "The job was triggered by a ${{ github.event_name }} event."
-      - name: Check out repository code
+      - name: Check out repository code 🛎️
         uses: actions/checkout@v3
       - run: |
           echo "${{ github.repository }} repository has been cloned to the runner."
@@ -29,7 +29,7 @@ jobs:
           always-auth: true
         env:
           JF_URL: https://${{ secrets.JF_RK_SA_URL }}
-      - name: JFrog CLI setup
+      - name: JFrog CLI setup 🐸
         uses: jfrog/setup-jfrog-cli@v3
         env:
           JF_URL: https://${{ secrets.JF_RK_SA_URL }}
@@ -52,21 +52,21 @@ jobs:
           jfrog rt build-add-git
           jfrog rt build-collect-env
       - name: NPM publish
-        run: jfrog npm publish
+        run: jfrog npm publish 🐸
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
-      - name: JFrog build publish
+      - name: JFrog build publish 🐸
         run: jfrog rt build-publish
 
   docker-build-and-publish-dev:
     needs: npm-build-and-publish-dev
     runs-on: ubuntu-20.04
     steps:
-    - name: Check out repository code
+    - name: Check out repository code 🛎️
       uses: actions/checkout@v3
     - name: Capture build version
       run: echo NPM_PACKAGE_BUILD_VERSION=$(cat package.json | jq -r ."version") >> $GITHUB_ENV
-    - name: JFrog CLI setup
+    - name: JFrog CLI setup 🐸
       uses: jfrog/setup-jfrog-cli@v3
       env:
         JF_URL: https://${{ secrets.JF_RK_SA_URL }}
@@ -80,9 +80,7 @@ jobs:
         registry: https://${{ secrets.JF_RK_SA_URL }}
         username: ${{ secrets.JF_RK_USERNAME }}
         password: ${{ secrets.JF_RK_TOKEN }}
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
-    - name: Build and push
+    - name: Docker Build and push 🐳
       uses: docker/build-push-action@v4
       with:
         context: .
@@ -93,9 +91,9 @@ jobs:
           GIT_AUTH_TOKEN=${{ secrets.JF_RK_TOKEN }}
       env:
         JF_URL: ${{ secrets.JF_RK_SA_URL }}
-    - name: Gather build details
+    - name: Gather build details 🐸
       run: |
         jfrog rt build-add-git
         jfrog rt build-collect-env
-    - name: JFrog build publish
+    - name: JFrog build publish 🐸
       run: jfrog rt build-publish
