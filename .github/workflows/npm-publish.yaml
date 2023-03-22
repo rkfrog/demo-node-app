@@ -3,8 +3,9 @@ name: demo-node-app-npm-publish
 on:
   push:
     branches:
-      - 'dev'
-      # - 'main'
+      - 'main'
+  pull_request: 
+    types: [closed]
   workflow_dispatch:
 
 jobs:
@@ -92,9 +93,9 @@ jobs:
           GIT_AUTH_TOKEN=${{ secrets.JF_RK_TOKEN }}
       env:
         JF_URL: ${{ secrets.JF_RK_SA_URL }}
-    # - name: Gather build details
-    #   run: |
-    #     jfrog rt build-add-git
-    #     jfrog rt build-collect-env
-    # - name: JFrog build publish
-    #   run: jfrog rt build-publish
+    - name: Gather build details
+      run: |
+        jfrog rt build-add-git
+        jfrog rt build-collect-env
+    - name: JFrog build publish
+      run: jfrog rt build-publish
