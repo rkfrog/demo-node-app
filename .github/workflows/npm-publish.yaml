@@ -85,10 +85,13 @@ jobs:
           node-version: "18.5.0"
           registry-url: 'https://roskad.jfrog.io/artifactory/api/npm/demonode-npm-dev-virtual/'
           always-auth: true
-      - name:  Jfrog cli version
-        uses: jfrog/setup-jfrog-cli@v3
-        run: |
-          jf --version
+      - uses: jfrog/setup-jfrog-cli@v3
+        env:
+          JF_URL: http://${{ secrets.JF_RK_SA_URL }}
+          JF_USER: ${{ secrets.JF_RK_USERNAME }}
+          JF_ACCESS_TOKEN: ${{ secrets.JF_RK_TOKEN }}
+      - run: |
+          jf rt ping
       # - name: List NPM config
       #   run: npm config ls -l
       # - name: Install dependencies
