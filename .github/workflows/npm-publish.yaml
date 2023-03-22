@@ -150,6 +150,9 @@ jobs:
         tags: roskad.jfrog.io/demonode-docker-virtual/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
         secrets: |
           GIT_AUTH_TOKEN=${{ secrets.JF_RK_TOKEN }}
+    - name: Gather build details
+      run: |
+        jfrog rt build-collect-env
     - name: JFrog build publish
       run: jfrog rt build-publish
 
