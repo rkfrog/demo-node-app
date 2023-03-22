@@ -87,9 +87,11 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: roskad.jfrog.io/demonode-docker-virtual/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
+        tags: ${{ env.JF_URL }}/demonode-docker-virtual/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
         secrets: |
           GIT_AUTH_TOKEN=${{ secrets.JF_RK_TOKEN }}
+      env:
+        JF_URL: ${{ secrets.JF_RK_SA_URL }}
     # - name: Gather build details
     #   run: |
     #     jfrog rt build-add-git
