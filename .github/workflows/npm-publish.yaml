@@ -24,7 +24,7 @@ jobs:
         uses: actions/setup-node@v3
         with: 
           node-version: "18.5.0"
-          registry-url: "https://$JF_URL/demonode-npm-dev-virtual/"
+          registry-url: "https://${{ env.JF_URL}}/demonode-npm-dev-virtual/"
           always-auth: true
         env:
           JF_URL: https://${{ secrets.JF_RK_SA_URL }}
