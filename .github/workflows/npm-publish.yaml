@@ -102,8 +102,14 @@ jobs:
         run: jfrog npm ci
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
-
-          
+      - name: Install dependencies
+        run: jfrog npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
+      - name: NPM publish
+        run: jfrog npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
       # - name: List NPM config
       #   run: npm config ls -l
       # - name: Install dependencies
