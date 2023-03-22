@@ -106,6 +106,10 @@ jobs:
         run: jfrog npm ci
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
+      - name: Gather build details
+        run: |
+          jfrog rt build-add-git
+          jfrog rt build-collect-env
       - name: NPM publish
         run: jfrog npm publish
         env:
