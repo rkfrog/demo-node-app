@@ -87,7 +87,7 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: https://roskad.jfrog.io/demonode-docker-virtual/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
+        tags: roskad.jfrog.io/demonode-docker-virtual/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
         secrets: |
           GIT_AUTH_TOKEN=${{ secrets.JF_RK_TOKEN }}
     # - name: Gather build details
