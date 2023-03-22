@@ -47,6 +47,7 @@ jobs:
       - name: Login to JFrog Docker repo
         uses: docker/login-action@v2
         with:
+          registry: roskad.jfrog.io/artifactory/demonode-docker-virtual
           username: ${{ secrets.JF_RK_USERNAME }}
           password: ${{ secrets.JF_RK_TOKEN }}
       - name: Set up Docker Buildx
