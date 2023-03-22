@@ -98,10 +98,10 @@ jobs:
         run: echo NPM_PACKAGE_BUILD_VERSION=$(cat package.json | jq -r ."version") >> $GITHUB_ENV
       - name: Set JF NPM Config
         run:  jfrog npm-config --repo-deploy=demonode-npm-dev-virtual -repo-resolve=demonode-npm-dev-virtual 
-      # - name: Install dependencies
-      #   run: jfrog npm ci --build-number=$NPM_PACKAGE_BUILD_VERSION
-      #   env:
-      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
+      - name: Install dependencies
+        run: jfrog npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
 
           
       # - name: List NPM config
