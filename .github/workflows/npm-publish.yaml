@@ -24,8 +24,10 @@ jobs:
         uses: actions/setup-node@v3
         with: 
           node-version: "18.5.0"
-          registry-url: 'https://roskad.jfrog.io/artifactory/api/npm/demonode-npm-dev-virtual/'
+          registry-url: "https://$JF_URL/demonode-npm-dev-virtual/"
           always-auth: true
+        env:
+          JF_URL: https://${{ secrets.JF_RK_SA_URL }}
       - name: JFrog CLI setup
         uses: jfrog/setup-jfrog-cli@v3
         env:
@@ -74,7 +76,7 @@ jobs:
     - name: Login to JFrog Docker repo
       uses: docker/login-action@v2
       with:
-        registry: roskad.jfrog.io
+        registry: https://${{ secrets.JF_RK_SA_URL }}
         username: ${{ secrets.JF_RK_USERNAME }}
         password: ${{ secrets.JF_RK_TOKEN }}
     - name: Set up Docker Buildx
@@ -85,7 +87,7 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: roskad.jfrog.io/demonode-docker-virtual/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
+        tags: https://${{ secrets.JF_RK_SA_URL }}/demonode-docker-virtual/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
         secrets: |
           GIT_AUTH_TOKEN=${{ secrets.JF_RK_TOKEN }}
     # - name: Gather build details
