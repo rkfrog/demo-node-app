@@ -114,10 +114,9 @@ jobs:
         run: jfrog npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
-      - name: JFrog build publish
-        run: jfrog rt build-publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
+      # - name: JFrog build publish
+      #   run: jfrog rt build-publish
+
   docker-build-and-publish-dev:
     needs: npm-build-and-publish-dev
     runs-on: ubuntu-20.04
@@ -153,7 +152,5 @@ jobs:
           GIT_AUTH_TOKEN=${{ secrets.JF_RK_TOKEN }}
     - name: JFrog build publish
       run: jfrog rt build-publish
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
 
       
