@@ -41,7 +41,7 @@ jobs:
         env:
           BUMP_VERSION: "patch"
       - name: NPM publish
-        run: npm publish
+        run: npm publish --dry-run
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
       - name: Login to JFrog Docker repo
@@ -59,4 +59,6 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: roskad.jfrog.io/artifactory/demonode-docker-virtual/demo-node-app:latest
+          secrets: |
+            GIT_AUTH_TOKEN=${{ secrets.JF_RK_TOKEN }}
       
