@@ -96,7 +96,7 @@ jobs:
       - name: Capture build version
         run: echo NPM_PACKAGE_BUILD_VERSION=$(cat package.json | jq -r ."version") >> $GITHUB_ENV
       - name: Install dependencies
-        run: jfrog rt npm-install --build-number=$NPM_PACKAGE_BUILD_VERSION
+        run: jfrog npm ci --build-number=$NPM_PACKAGE_BUILD_VERSION
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
 
