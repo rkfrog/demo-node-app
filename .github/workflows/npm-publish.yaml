@@ -1,7 +1,7 @@
 name: demo-node-app-npm-publish
 
 on:
-  push:
+  # push:
   pull_request:
     types: 
       - closed
