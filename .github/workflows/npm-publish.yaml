@@ -1,14 +1,11 @@
 name: demo-node-app-npm-publish
 
 on:
-  # push:
   pull_request:
     types: 
       - closed
-    branches-ignore:
-      - dev
-    # branches:
-    #   - main
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
