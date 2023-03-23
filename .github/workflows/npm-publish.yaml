@@ -5,8 +5,8 @@ on:
     branches:
       - 'main'
   pull_request:
-    branches:
-      - 'main'
+    branches-ignore:
+      - 'dev'
     types: [closed]
   workflow_dispatch:
 
@@ -53,8 +53,8 @@ jobs:
         run: |
           jfrog rt build-add-git
           jfrog rt build-collect-env
-      - name: NPM publish
-        run: jfrog npm publish 🐸
+      - name: NPM publish 🐸
+        run: jfrog npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
       - name: JFrog build publish 🐸
