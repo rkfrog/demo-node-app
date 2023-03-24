@@ -12,7 +12,7 @@ router.get('/', function(req, res, next) {
   os_ip = os_ip.eth0[0].address;
   res.render('index', { 
     title: 'Hi there!',
-    version: 'v1.0.0',
+    version: 'v1.1.14',
     os: {
       hostname: os_hostname,
       arch: os_arch,
