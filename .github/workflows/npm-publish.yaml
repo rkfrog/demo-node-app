@@ -64,20 +64,30 @@ jobs:
           registry: https://${{ secrets.JF_RK_SA_URL }}
           username: ${{ secrets.JF_RK_USERNAME }}
           password: ${{ secrets.JF_RK_TOKEN }}
-      - name: Docker Build and push 🐳
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: ${{ env.JF_URL }}/demonode-docker-virtual/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
-          secrets: |
-            GIT_AUTH_TOKEN=${{ secrets.JF_RK_TOKEN }}
+      # - name: Docker Build and push 🐳
+      #   uses: docker/build-push-action@v4
+      #   with:
+      #     context: .
+      #     file: ./Dockerfile
+      #     push: true
+      #     tags: ${{ env.JF_URL }}/demonode-docker-virtual/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
+      #     secrets: |
+      #       GIT_AUTH_TOKEN=${{ secrets.JF_RK_TOKEN }}
+      #   env:
+      #     JF_URL: ${{ secrets.JF_RK_SA_URL }}
+      - name: Docker Build
+        run: |
+          jfrog docker image build --tag ${{ env.JF_URL }}/demonode-docker-virtual/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }} .
         env:
           JF_URL: ${{ secrets.JF_RK_SA_URL }}
-      - name: Gather build details 🐸
+      - name: Docker Push
         run: |
-          jfrog rt build-add-git
-          jfrog rt build-collect-env
+          jfrog docker push ${{ env.JF_URL }}/demonode-docker-virtual/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
+        env:
+          JF_URL: ${{ secrets.JF_RK_SA_URL }}
+      # - name: Gather build details 🐸
+      #   run: |
+      #     jfrog rt build-add-git
+      #     jfrog rt build-collect-env
       - name: JFrog build publish 🐸
         run: jfrog rt build-publish
