@@ -58,8 +58,6 @@ jobs:
         run: jfrog npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
-      - name: JFrog build publish 🐸
-        run: jfrog rt build-publish
       - name: Login to JFrog Docker repo
         uses: docker/login-action@v2
         with:
