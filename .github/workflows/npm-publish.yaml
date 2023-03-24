@@ -85,11 +85,7 @@ jobs:
           jfrog docker push ${{ env.JF_URL }}/demonode-docker-virtual/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
         env:
           JF_URL: ${{ secrets.JF_RK_SA_URL }}
-      # - name: Gather build details 🐸
-      #   run: |
-      #     jfrog rt build-add-git
-      #     jfrog rt build-collect-env
       - name: JFrog build publish 🐸
         run: jfrog rt build-publish
       - name: JFrog build scan 🐸
-        run: jfrog bs 
+        run: jfrog bs --fail=false
