@@ -89,5 +89,5 @@ jobs:
         run: jfrog rt build-publish
       - name: JFrog build scan 🐸
         run: |
-          sleep 10
+          sleep 20
           jfrog bs ${{ github.workflow }} ${{ github.run_number }} --vuln=true

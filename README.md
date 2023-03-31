@@ -11,6 +11,13 @@ Node.js | Express
 git clone https://github.com/rkfrog/demo-node-app.git
 ```
 
+### Bootstrapping the app
+```
+npm install
+DEBUG=demo-node-app:* npm start
+## App should be up and running on port 3000
+```
+
 ### Running code in Docker
 ```
 cd demo-node-app
