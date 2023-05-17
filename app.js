@@ -6,7 +6,7 @@ const logger = require('morgan');
 const os = require('os');
 
 const indexRouter = require('./routes/index');
-const healthzRouter = require('./routes/healthz');
+const pingRouter = require('./routes/ping');
 
 const app = express();
 
@@ -21,7 +21,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/healthz', healthzRouter);
+app.use('/ping', pingRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
