@@ -11,7 +11,7 @@ resources:
         pullRequestCreate: true
 
 pipelines:
-  - name: demo-node-app-ci
+  - name: demo_node_app_ci
     steps:
       - name: npm_build
         type: NpmBuild
