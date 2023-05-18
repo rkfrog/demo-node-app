@@ -1,0 +1,24 @@
+resources:
+  - name: demo-node-app
+    type: GitRepo
+    configuration:
+      gitProvider: rkfrog
+      path: rkfrog/demo-node-app
+      branches:
+        include: main
+      buildOn:
+        commit: true
+        pullRequestCreate: true
+
+pipelines:
+  - name: demo-node-app-ci
+    steps:
+      - name: npm-build
+        type: NpmBuild
+        configuration:
+          repositoryName: demonode-npm-dev-local
+          resolverRepo: npm-remote
+          sourceLocation: ./
+          integrations:
+              - name: rk_jf_rt_saas
+              
