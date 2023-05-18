@@ -13,7 +13,7 @@ resources:
 pipelines:
   - name: demo-node-app-ci
     steps:
-      - name: npm-build
+      - name: npm_build
         type: NpmBuild
         configuration:
           repositoryName: demonode-npm-dev-local
@@ -21,4 +21,3 @@ pipelines:
           sourceLocation: ./
           integrations:
               - name: rk_jf_rt_saas
-              
