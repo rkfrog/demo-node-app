@@ -1,5 +1,5 @@
 resources:
-  - name: demo-node-app
+  - name: demo_node_app_git
     type: GitRepo
     configuration:
       gitProvider: rkfrog
@@ -21,4 +21,4 @@ pipelines:
           integrations:
               - name: rk_jf_rt_saas
           inputResources:
-            - name: demo-node-app
+            - name: demo_node_app_git
