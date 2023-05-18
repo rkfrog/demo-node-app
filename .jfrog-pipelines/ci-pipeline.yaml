@@ -16,7 +16,7 @@ pipelines:
       - name: npm_build
         type: NpmBuild
         configuration:
-          repositoryName: demonode-npm-dev-local
+          repositoryName: demonode-npm-dev-virtual
           resolverRepo: npm-remote
           sourceLocation: ./
           integrations:
