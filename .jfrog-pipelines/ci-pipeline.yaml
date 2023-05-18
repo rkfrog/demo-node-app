@@ -9,6 +9,12 @@ resources:
       buildOn:
         commit: true
         pullRequestCreate: true
+  - name: demo_node_app_buildinfo
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: rk_jf_rt_saas
+      buildName: demo_node_app_jf_ci
+      buildNumber: 1
 
 #pipeline code
 pipelines:
@@ -23,3 +29,14 @@ pipelines:
               - name: rk_jf_rt_saas
           inputResources:
             - name: demo_node_app_git
+      - name: npm_publish
+        type: NpmPublish
+        configuration:
+          repositoryName: demonode-npm-dev-virtual
+          autoPublishBuildInfo: true
+          integrations:
+            - name: rk_jf_rt_saas
+          inputSteps: 
+            - name: npm_build
+          outputResources:
+            - name: demo_node_app_buildinfo
