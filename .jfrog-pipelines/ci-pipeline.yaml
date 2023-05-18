@@ -17,7 +17,8 @@ pipelines:
         type: NpmBuild
         configuration:
           repositoryName: demonode-npm-dev-virtual
-          resolverRepo: npm-remote
           sourceLocation: ./
           integrations:
               - name: rk_jf_rt_saas
+          inputResources:
+            - name: demo-node-app
