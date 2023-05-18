@@ -10,6 +10,7 @@ resources:
         commit: true
         pullRequestCreate: true
 
+#pipeline code
 pipelines:
   - name: demo_node_app_ci
     steps:
