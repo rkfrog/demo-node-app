@@ -18,7 +18,7 @@ resources:
 
 #pipeline code
 pipelines:
-  - name: demo_node_app_ci
+  - name: demo_node_app_jf_ci
     steps:
       - name: npm_build
         type: NpmBuild
@@ -39,4 +39,11 @@ pipelines:
           inputSteps: 
             - name: npm_build
           outputResources:
+            - name: demo_node_app_buildinfo
+  - name: demo_node_app_ci_scan
+    steps:
+      - name: xray_scan
+        type: XrayScan
+        configuration:
+          inputResources:
             - name: demo_node_app_buildinfo
