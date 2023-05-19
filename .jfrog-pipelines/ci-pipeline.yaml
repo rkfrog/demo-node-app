@@ -9,7 +9,7 @@ resources:
       buildOn:
         commit: true
         pullRequestCreate: true
-  - name: demo_node_app_buildinfo
+  - name: demo_node_app_dev_buildinfo
     type: BuildInfo
     configuration:
       sourceArtifactory: rk_jf_rt_saas
@@ -45,12 +45,14 @@ pipelines:
           inputSteps: 
             - name: npm_build
           outputResources:
-            - name: demo_node_app_buildinfo
+            - name: demo_node_app_dev_buildinfo
       - name: xray_scan
         type: XrayScan
         configuration:
           inputResources:
-            - name: demo_node_app_buildinfo
+            - name: demo_node_app_dev_buildinfo
+          outputResources:
+            - name: demo_node_app_build_promote_QA
       - name: demo_node_app_build_promote_QA
         type: PromoteBuild
         configuration:
@@ -60,6 +62,7 @@ pipelines:
           comment: "This build has passed all QA testing > $run_number"
           copy: true
           inputResources:
-            - name: demo_node_app_buildinfo
+            - name: demo_node_app_dev_buildinfo
+            - name: xray_scan
           outputResources:
             - name: demo_node_app_qa_promoted_buildinfo
