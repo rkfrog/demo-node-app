@@ -51,8 +51,6 @@ pipelines:
         configuration:
           inputResources:
             - name: demo_node_app_dev_buildinfo
-          outputResources:
-            - name: demo_node_app_build_promote_QA
       - name: demo_node_app_build_promote_QA
         type: PromoteBuild
         configuration:
@@ -63,6 +61,5 @@ pipelines:
           copy: true
           inputResources:
             - name: demo_node_app_dev_buildinfo
-            - name: xray_scan
           outputResources:
             - name: demo_node_app_qa_promoted_buildinfo
