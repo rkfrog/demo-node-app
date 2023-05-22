@@ -17,19 +17,25 @@ resources:
   #     imageName: roskad.jfrog.io/demonode-docker-dev-local/demo-node-app
   #     imageTag: '${NPM_PACKAGE_BUILD_VERSION}'
   #     autoPull: true
-  - name: demo_node_app_dev_buildinfo
+  - name: npm_dev_buildinfo
     type: BuildInfo
     configuration:
       sourceArtifactory: rk_jf_rt_saas
       buildName: demo_node_app_jf_ci
       buildNumber: 1
-  - name: demo_node_app_dev_docker_buildinfo
+  - name: docker_dev_buildinfo
     type: BuildInfo
     configuration:
       sourceArtifactory: rk_jf_rt_saas
       buildName: demo_node_app_jf_ci
       buildNumber: 1
-  - name: demo_node_app_qa_promoted_buildinfo
+  - name: npm_qa_promoted_buildinfo
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: rk_jf_rt_saas
+      buildName: demo_node_app_jf_ci
+      buildNumber: 1
+  - name: docker_qa_promoted_buildinfo
     type: BuildInfo
     configuration:
       sourceArtifactory: rk_jf_rt_saas
@@ -80,7 +86,7 @@ pipelines:
           inputSteps: 
             - name: npm_build
           outputResources:
-            - name: demo_node_app_dev_buildinfo
+            - name: npm_dev_buildinfo
       - name: docker_build
         type: DockerBuild
         configuration:
@@ -109,29 +115,31 @@ pipelines:
           inputSteps:
             - name: docker_build
           outputResources:
-            - name: demo_node_app_dev_docker_buildinfo
+            - name: docker_dev_buildinfo
             # - name: demo_node_app_dev_docker_image
-      - name: demo_node_app_npm_build_promote_qa
+      - name: npm_build_promote_qa
         type: PromoteBuild
         configuration:
+          affinityGroup: npm_build_publish
           targetRepository: demonode-npm-test-local
           includeDependencies: false
           status: "npm-qa-tested"
           comment: "This build has passed all npm QA testing > $run_number"
           copy: false
           inputResources:
-            - name: demo_node_app_dev_buildinfo
+            - name: npm_dev_buildinfo
           outputResources:
-            - name: demo_node_app_qa_promoted_buildinfo
-      - name: demo_node_app_docker_build_promote_qa
+            - name: npm_qa_promoted_buildinfo
+      - name: docker_build_promote_qa
         type: PromoteBuild
         configuration:
+          affinityGroup: docker_build_push
           targetRepository: demonode-docker-uat-local
           includeDependencies: false
           status: "docker-qa-tested"
           comment: "This build has passed all docker QA testing > $run_number"
           copy: false
           inputResources:
-            - name: demo_node_app_dev_buildinfo
+            - name: docker_dev_buildinfo
           outputResources:
-            - name: demo_node_app_qa_promoted_buildinfo
+            - name: docker_qa_promoted_buildinfo
