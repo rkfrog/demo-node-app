@@ -42,7 +42,7 @@ resources:
       buildName: demo_node_app_jf_ci
       buildNumber: 1
 
-#pipeline code
+#ci pipeline code
 pipelines:
   - name: demo_node_app_jf_ci
     steps:
@@ -62,6 +62,7 @@ pipelines:
             - ls -ltrh ./dependencyState/resources/demo_node_app_git/
             - NPM_PACKAGE_BUILD_VERSION=$(cat ./dependencyState/resources/demo_node_app_git/package.json | jq -r ."version")
             - add_run_variables NPM_PACKAGE_BUILD_VERSION=$NPM_PACKAGE_BUILD_VERSION
+            - echo "$NPM_PACKAGE_BUILD_VERSION"
       - name: npm_build
         type: NpmBuild
         configuration:
