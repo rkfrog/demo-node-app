@@ -35,7 +35,19 @@ resources:
       sourceArtifactory: rk_jf_rt_saas
       buildName: demo_node_app_jf_ci
       buildNumber: 1
+  - name: npm_prod_promoted_buildinfo
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: rk_jf_rt_saas
+      buildName: demo_node_app_jf_ci
+      buildNumber: 1
   - name: docker_qa_promoted_buildinfo
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: rk_jf_rt_saas
+      buildName: demo_node_app_jf_ci
+      buildNumber: 1
+  - name: docker_prod_promoted_buildinfo
     type: BuildInfo
     configuration:
       sourceArtifactory: rk_jf_rt_saas
@@ -132,6 +144,19 @@ pipelines:
             - name: npm_dev_buildinfo
           outputResources:
             - name: npm_qa_promoted_buildinfo
+      - name: npm_build_promote_prod
+        type: PromoteBuild
+        configuration:
+          affinityGroup: npm_build_publish
+          targetRepository: demonode-npm-prod-local
+          includeDependencies: false
+          status: "npm-prod-ready"
+          comment: "This build has passed all npm production testing > $run_number"
+          copy: true
+          inputResources:
+            - name: npm_qa_promoted_buildinfo
+          outputResources:
+            - name: npm_prod_promoted_buildinfo
       - name: docker_build_promote_qa
         type: PromoteBuild
         configuration:
@@ -145,3 +170,16 @@ pipelines:
             - name: docker_dev_buildinfo
           outputResources:
             - name: docker_qa_promoted_buildinfo
+      - name: docker_build_promote_prod
+        type: PromoteBuild
+        configuration:
+          affinityGroup: docker_build_push
+          targetRepository: demonode-docker-prod-local
+          includeDependencies: false
+          status: "docker-prod-ready"
+          comment: "This build has passed all production testing > $run_number"
+          copy: true
+          inputResources:
+            - name: docker_qa_promoted_buildinfo
+          outputResources:
+            - name: docker_prod_promoted_buildinfo
