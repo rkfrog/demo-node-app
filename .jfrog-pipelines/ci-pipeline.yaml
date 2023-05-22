@@ -98,6 +98,7 @@ pipelines:
           dockerFileLocation: .
           inputSteps:
               - name: get_npm_app_version
+              - name: npm_build
           inputResources:
             - name: demo_node_app_git
           integrations:
@@ -126,7 +127,7 @@ pipelines:
           includeDependencies: false
           status: "npm-qa-tested"
           comment: "This build has passed all npm QA testing > $run_number"
-          copy: false
+          copy: true
           inputResources:
             - name: npm_dev_buildinfo
           outputResources:
@@ -139,7 +140,7 @@ pipelines:
           includeDependencies: false
           status: "docker-qa-tested"
           comment: "This build has passed all docker QA testing > $run_number"
-          copy: false
+          copy: true
           inputResources:
             - name: docker_dev_buildinfo
           outputResources:
