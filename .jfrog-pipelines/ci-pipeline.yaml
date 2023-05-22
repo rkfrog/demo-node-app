@@ -62,7 +62,7 @@ pipelines:
       - name: docker_build
         type: DockerBuild
         configuration:
-          dockerImageName: roskad.jfrog.io/demonode-docker-dev-local
+          dockerImageName: roskad.jfrog.io/demonode-docker-dev-local/demo-node-app
           dockerImageTag: ${NPM_PACKAGE_BUILD_VERSION}
           dockerFileName: Dockerfile
           dockerFileLocation: .
@@ -79,6 +79,7 @@ pipelines:
           autoPublishBuildInfo: true
           integrations:
             - name: rk_jf_rt_saas
+            - name: roskad_docker_registry
           inputSteps:
             - name: docker_build
           outputResources:
