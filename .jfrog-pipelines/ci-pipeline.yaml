@@ -72,6 +72,7 @@ pipelines:
             - name: demo_node_app_git
           integrations:
             - name: rk_jf_rt_saas
+            - name: roskad_docker_registry
       - name: docker_push
         type: DockerPush
         configuration:
@@ -100,6 +101,7 @@ pipelines:
         configuration:
           inputResources:
             - name: demo_node_app_dev_buildinfo
+            - name: demo_node_app_dev_docker_buildinfo
       - name: demo_node_app_build_promote_QA
         type: PromoteBuild
         configuration:
