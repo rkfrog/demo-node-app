@@ -15,6 +15,12 @@ resources:
       sourceArtifactory: rk_jf_rt_saas
       buildName: demo_node_app_jf_ci
       buildNumber: 1
+  - name: demo_node_app_dev_docker_buildinfo
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: rk_jf_rt_saas
+      buildName: demo_node_app_jf_ci
+      buildNumber: 1
   - name: demo_node_app_qa_promoted_buildinfo
     type: BuildInfo
     configuration:
@@ -53,6 +59,28 @@ pipelines:
               - name: get_npm_app_version
           inputResources:
             - name: demo_node_app_git
+      - name: docker_build
+        type: DockerBuild
+        configuration:
+          dockerImageName: roskad.jfrog.io/demonode-docker-dev-local
+          dockerImageTag: ${NPM_PACKAGE_BUILD_VERSION}
+          dockerFileName: Dockerfile
+          dockerFileLocation: .
+          inputResources:
+            - name: demo_node_app_git
+          integrations:
+            - name: rk_jf_rt_saas
+      - name: docker_push
+        type: DockerPush
+        configuration:
+          targetRepository: demonode-docker-virtual
+          autoPublishBuildInfo: true
+          integrations:
+            - name: rk_jf_rt_saas
+          inputSteps:
+            - name: docker_build
+          outputResources:
+            - name: demo_node_app_dev_docker_buildinfo
       - name: npm_publish
         type: NpmPublish
         configuration:
