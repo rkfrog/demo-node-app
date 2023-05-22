@@ -147,6 +147,7 @@ pipelines:
       - name: xray_scan_npm_prod
         type: XrayScan
         configuration:
+          affinityGroup: npm_build_publish
           failOnScan: true
           inputResources:
             - name: npm_qa_promoted_buildinfo
@@ -183,6 +184,7 @@ pipelines:
       - name: xray_scan_docker_prod
         type: XrayScan
         configuration:
+          affinityGroup: docker_build_push
           failOnScan: true
           inputResources:
             - name: docker_qa_promoted_buildinfo
