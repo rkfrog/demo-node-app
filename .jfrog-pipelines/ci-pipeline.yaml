@@ -59,6 +59,18 @@ pipelines:
               - name: get_npm_app_version
           inputResources:
             - name: demo_node_app_git
+      - name: npm_publish
+        type: NpmPublish
+        configuration:
+          repositoryName: demonode-npm-dev-virtual
+          forceXrayScan: true
+          autoPublishBuildInfo: true
+          integrations:
+            - name: rk_jf_rt_saas
+          inputSteps: 
+            - name: npm_build
+          outputResources:
+            - name: demo_node_app_dev_buildinfo
       - name: docker_build
         type: DockerBuild
         configuration:
@@ -78,29 +90,13 @@ pipelines:
         configuration:
           targetRepository: demonode-docker-virtual
           autoPublishBuildInfo: true
+          forceXrayScan: true
           integrations:
             - name: rk_jf_rt_saas
             - name: roskad_docker_registry
           inputSteps:
             - name: docker_build
           outputResources:
-            - name: demo_node_app_dev_docker_buildinfo
-      - name: npm_publish
-        type: NpmPublish
-        configuration:
-          repositoryName: demonode-npm-dev-virtual
-          autoPublishBuildInfo: true
-          integrations:
-            - name: rk_jf_rt_saas
-          inputSteps: 
-            - name: npm_build
-          outputResources:
-            - name: demo_node_app_dev_buildinfo
-      - name: xray_scan_dev
-        type: XrayScan
-        configuration:
-          inputResources:
-            - name: demo_node_app_dev_buildinfo
             - name: demo_node_app_dev_docker_buildinfo
       - name: demo_node_app_build_promote_QA
         type: PromoteBuild
@@ -111,7 +107,7 @@ pipelines:
           comment: "This build has passed all QA testing > $run_number"
           copy: true
           inputSteps: 
-            - name: xray_scan_dev
+            - name: xray_scan_npm_dev
           inputResources:
             - name: demo_node_app_dev_buildinfo
           outputResources:
