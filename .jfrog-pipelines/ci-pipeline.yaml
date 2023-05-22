@@ -41,6 +41,10 @@ pipelines:
           onExecute:
             - pwd
             - ls -ltrh
+            - ls -ltrh ./workspace/
+            - ls -ltrh ./dependencyState/
+            - ls -ltrh ./dependencyState/resources/
+            - ls -ltrh ./dependencyState/resources/demo_node_app_git/
       - name: npm_build
         type: NpmBuild
         configuration:
