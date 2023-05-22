@@ -26,6 +26,21 @@ resources:
 pipelines:
   - name: demo_node_app_jf_ci
     steps:
+      - name: get_npm_app_version
+        type: Bash
+        configuration:
+          runtime:
+            type: image
+            image:
+              auto:
+                language: node
+                version: "18.15"
+          inputResources:
+          - name: demo_node_app_git
+        execution:
+          onExecute:
+            - pwd
+            - ls -ltrh
       - name: npm_build
         type: NpmBuild
         configuration:
