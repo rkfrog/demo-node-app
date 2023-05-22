@@ -144,6 +144,14 @@ pipelines:
             - name: npm_dev_buildinfo
           outputResources:
             - name: npm_qa_promoted_buildinfo
+      - name: xray_scan_npm_prod
+        type: XrayScan
+        configuration:
+          failOnScan: true
+          inputResources:
+            - name: npm_qa_promoted_buildinfo
+          outputResources:
+            - name: npm_prod_promoted_buildinfo
       - name: npm_build_promote_prod
         type: PromoteBuild
         configuration:
@@ -153,6 +161,8 @@ pipelines:
           status: "npm-prod-ready"
           comment: "This build has passed all npm production testing > $run_number"
           copy: true
+          inputSteps:
+            - name: xray_scan_npm_prod
           inputResources:
             - name: npm_qa_promoted_buildinfo
           outputResources:
@@ -170,6 +180,14 @@ pipelines:
             - name: docker_dev_buildinfo
           outputResources:
             - name: docker_qa_promoted_buildinfo
+      - name: xray_scan_docker_prod
+        type: XrayScan
+        configuration:
+          failOnScan: true
+          inputResources:
+            - name: docker_qa_promoted_buildinfo
+          outputResources:
+            - name: docker_prod_promoted_buildinfo
       - name: docker_build_promote_prod
         type: PromoteBuild
         configuration:
@@ -179,6 +197,8 @@ pipelines:
           status: "docker-prod-ready"
           comment: "This build has passed all production testing > $run_number"
           copy: true
+          inputSteps:
+            - name: xray_scan_docker_prod
           inputResources:
             - name: docker_qa_promoted_buildinfo
           outputResources:
