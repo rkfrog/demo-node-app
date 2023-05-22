@@ -9,6 +9,14 @@ resources:
       buildOn:
         commit: true
         pullRequestCreate: true
+  - name: demo_node_app_dev_docker_image
+    type: Image
+    configuration:
+      registry: roskad_docker_registry
+      sourceRepository: demonode-docker-dev-local
+      imageName: roskad.jfrog.io/demonode-docker-dev-local/demo-node-app
+      imageTag: '${NPM_PACKAGE_BUILD_VERSION}'
+      autoPull: true
   - name: demo_node_app_dev_buildinfo
     type: BuildInfo
     configuration:
@@ -51,6 +59,7 @@ pipelines:
       - name: npm_build
         type: NpmBuild
         configuration:
+          affinityGroup: npm_build_publish
           repositoryName: demonode-npm-dev-virtual
           sourceLocation: ./
           integrations:
@@ -62,6 +71,7 @@ pipelines:
       - name: npm_publish
         type: NpmPublish
         configuration:
+          affinityGroup: npm_build_publish
           repositoryName: demonode-npm-dev-virtual
           forceXrayScan: true
           autoPublishBuildInfo: true
@@ -74,6 +84,7 @@ pipelines:
       - name: docker_build
         type: DockerBuild
         configuration:
+          affinityGroup: docker_build_push
           dockerImageName: roskad.jfrog.io/demonode-docker-dev-local/demo-node-app
           dockerImageTag: ${NPM_PACKAGE_BUILD_VERSION}
           dockerFileName: Dockerfile
@@ -88,6 +99,7 @@ pipelines:
       - name: docker_push
         type: DockerPush
         configuration:
+          affinityGroup: docker_build_push
           targetRepository: demonode-docker-virtual
           autoPublishBuildInfo: true
           forceXrayScan: true
@@ -98,6 +110,7 @@ pipelines:
             - name: docker_build
           outputResources:
             - name: demo_node_app_dev_docker_buildinfo
+            - name: demo_node_app_dev_docker_image
       - name: demo_node_app_build_promote_QA
         type: PromoteBuild
         configuration:
