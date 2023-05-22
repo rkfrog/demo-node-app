@@ -66,6 +66,8 @@ pipelines:
           dockerImageTag: ${NPM_PACKAGE_BUILD_VERSION}
           dockerFileName: Dockerfile
           dockerFileLocation: .
+          inputSteps:
+              - name: get_npm_app_version
           inputResources:
             - name: demo_node_app_git
           integrations:
