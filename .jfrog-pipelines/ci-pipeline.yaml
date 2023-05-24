@@ -224,7 +224,12 @@ pipelines:
         execution:
           onExecute:
             - ls -ltrh ./dependencyState/resources/demo_node_app_git/
-            - ls -ltrh ~/
+            - which kubectl
+            - kubectl version --client
+            - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+            - chmod +x kubectl
+            - mv kubectl $(which kubectl)
+            - kubectl version --client
             - kubectl config view
             - aws configure list
             - kubectl get ns -A
