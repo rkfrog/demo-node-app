@@ -224,5 +224,7 @@ pipelines:
         execution:
           onExecute:
             - ls -ltrh ./dependencyState/resources/demo_node_app_git/
-            - env
-            - kubectl cluster-info
+            - ls -ltrh ~/.kube/
+            - ls -ltrh ~/
+            - kubectl config view
+            - aws configure list
