@@ -215,9 +215,10 @@ pipelines:
             type: image
           inputResources:
           - name: demo_node_app_git
+          integrations:
           - name: rk_demo_k8s
         execution:
           onExecute:
             - ls -ltrh ./dependencyState/resources/demo_node_app_git/
             - kubectl version
-            - kubectl cluster-info 
+            - kubectl cluster-info
