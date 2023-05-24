@@ -219,7 +219,7 @@ pipelines:
           - name: rk_demo_k8s
           - name: demo_cloud
           inputSteps:
-            - name: docker_build_promote_prod
+            - name: docker_prod_promoted_buildinfo
             - name: npm_prod_promoted_buildinfo
         execution:
           onExecute:
