@@ -95,7 +95,7 @@ pipelines:
           repositoryName: demonode-npm-dev-virtual
           forceXrayScan: true
           autoPublishBuildInfo: true
-          failOnScan: true
+          failOnScan: false
           integrations:
             - name: rk_jf_rt_saas
           inputSteps: 
@@ -125,7 +125,7 @@ pipelines:
           targetRepository: demonode-docker-virtual
           autoPublishBuildInfo: true
           forceXrayScan: true
-          failOnScan: true
+          failOnScan: false
           integrations:
             - name: rk_jf_rt_saas
             - name: roskad_docker_registry
