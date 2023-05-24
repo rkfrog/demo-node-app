@@ -217,6 +217,10 @@ pipelines:
           - name: demo_node_app_git
           integrations:
           - name: rk_demo_k8s
+          - name: demo_cloud
+          inputSteps:
+            - name: docker_build_promote_prod
+            - name: npm_prod_promoted_buildinfo
         execution:
           onExecute:
             - ls -ltrh ./dependencyState/resources/demo_node_app_git/
