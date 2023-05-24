@@ -227,3 +227,4 @@ pipelines:
             - ls -ltrh ~/
             - kubectl config view
             - aws configure list
+            - kubectl get ns -A
