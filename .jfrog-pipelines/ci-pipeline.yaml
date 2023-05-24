@@ -224,8 +224,5 @@ pipelines:
         execution:
           onExecute:
             - ls -ltrh ./dependencyState/resources/demo_node_app_git/
-            - ls -ltrh ~/.aws/
-            - aws configure list
-            - aws sts get-caller-identity
-            - kubectl version
+            - env
             - kubectl cluster-info
