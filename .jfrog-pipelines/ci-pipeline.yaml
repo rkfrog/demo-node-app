@@ -232,5 +232,5 @@ pipelines:
             - kubectl version --client
             - kubectl config view
             - aws configure list
-            - curl -v $(kubectl config view -o jsonpath='{.clusters[0].cluster.server}')/healthz
+            - curl -vk $(kubectl config view -o jsonpath='{.clusters[0].cluster.server}')/healthz
             - kubectl get ns -A
