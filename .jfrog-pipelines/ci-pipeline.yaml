@@ -222,8 +222,7 @@ pipelines:
           #   - name: docker_build_promote_prod
           #   - name: npm_build_promote_prod
         execution:
-          onExecute:
-            - ls -ltrh ./dependencyState/resources/demo_node_app_git/
+          onStart:
             - which kubectl
             - kubectl version --client
             - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
@@ -237,5 +236,7 @@ pipelines:
             - unzip awscliv2.zip
             - ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update
             - aws --version
+          onExecute:
+            - ls -ltrh ./dependencyState/resources/demo_node_app_git/
             - curl -vk $(kubectl config view -o jsonpath='{.clusters[0].cluster.server}')/healthz
             - kubectl get ns -A
