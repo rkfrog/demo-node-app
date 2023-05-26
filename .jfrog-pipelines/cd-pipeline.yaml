@@ -1,3 +1,4 @@
+#JFrog pipelines for Continuous Deployment
 resources:
   - name: demo_node_app_git_cd
     type: GitRepo
@@ -13,6 +14,7 @@ resources:
     type: IncomingWebhook
     configuration:
       webhookName: demo_node_app_prod_incoming_webhook
+
 pipelines:
   - name: demo_node_app_jf_prod_cd
     steps:

@@ -1,3 +1,4 @@
+#JFrog pipelines for Continuous Integration
 resources:
   - name: demo_node_app_git
     type: GitRepo
@@ -54,7 +55,6 @@ resources:
       buildName: demo_node_app_jf_ci
       buildNumber: 1
 
-#ci pipeline code
 pipelines:
   - name: demo_node_app_jf_ci
     steps:
