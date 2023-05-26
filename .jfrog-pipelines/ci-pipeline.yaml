@@ -217,6 +217,7 @@ pipelines:
           - name: demo_node_app_git
           integrations:
           # - name: rk_demo_k8s
+          - name: auth
           - name: demo_cloud
           # inputSteps:
           #   - name: docker_build_promote_prod
@@ -240,7 +241,8 @@ pipelines:
             - ls -ltrh ./dependencyState/resources/demo_node_app_git/
             - env | grep aws
             - aws configure list-profiles
+            - printenv int_auth_AWS_ACCESS_KEY_ID
             - aws sts get-caller-identity
-            - aws eks update-kubeconfig --name rk-demo-pub-01 --region us-east-1
+            - aws eks update-kubeconfig --name rk-demo-pub-01 --region us-east-1 --profile default
             - curl -vk $(kubectl config view -o jsonpath='{.clusters[0].cluster.server}')/healthz
             - kubectl get ns -A
