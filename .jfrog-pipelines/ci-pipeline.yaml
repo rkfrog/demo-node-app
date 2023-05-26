@@ -234,11 +234,9 @@ pipelines:
             - ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update
             - aws --version
             - aws configure list
-          onExecute:
-            - echo "aws_access_key_id = $(printenv int_auth_id)" >> $(printenv AWS_SHARED_CREDENTIALS_FILE)
-            - echo "aws_secret_access_key = $(printenv int_auth_key)" >> $(printenv AWS_SHARED_CREDENTIALS_FILE)
             - echo "aws_session_token = $(printenv int_auth_session)" >> $(printenv AWS_SHARED_CREDENTIALS_FILE)
             - aws eks update-kubeconfig --name rk-demo-pub-01 --region us-east-1 --profile default
-            - curl -vk $(kubectl config view -o jsonpath='{.clusters[0].cluster.server}')/healthz
+          onExecute:
+            - curl $(kubectl config view -o jsonpath='{.clusters[0].cluster.server}')/healthz
             - kubectl get ns -A
-            - env  
+            - env
