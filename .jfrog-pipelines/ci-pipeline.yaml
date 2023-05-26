@@ -238,8 +238,8 @@ pipelines:
             - aws --version
           onExecute:
             - ls -ltrh ./dependencyState/resources/demo_node_app_git/
-            - aws sts get-caller-identity
             - env | grep aws
+            - aws sts get-caller-identity
             - aws eks update-kubeconfig --name rk-demo-pub-01 --region us-east-1
             - curl -vk $(kubectl config view -o jsonpath='{.clusters[0].cluster.server}')/healthz
             - kubectl get ns -A
