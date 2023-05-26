@@ -243,6 +243,6 @@ pipelines:
             - kubectl get ns -A
             - export APP_VERSION=$(echo $NPM_PACKAGE_BUILD_VERSION)
             - echo "Deploying $APP_VERSION to the K8S cluster"
-            - envsubst < k8s/deployment.yaml | kubectl apply -n jfrog -f -
+            - envsubst < ./dependencyState/resources/demo_node_app_git/k8s/deployment.yaml | kubectl apply -n jfrog -f -
             - kubectl get all -A -n jfrog
             - unset int_auth_session
