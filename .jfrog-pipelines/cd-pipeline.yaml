@@ -1,4 +1,4 @@
-# #JFrog pipelines for Continuous Deployment
+# ##JFrog pipelines for Continuous Deployment
 # resources:
 #   - name: demo_node_app_git_cd
 #     type: GitRepo
