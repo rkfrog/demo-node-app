@@ -216,7 +216,7 @@ pipelines:
           inputResources:
           - name: demo_node_app_git
           integrations:
-          - name: rk_demo_k8s
+          # - name: rk_demo_k8s
           - name: demo_cloud
           # inputSteps:
           #   - name: docker_build_promote_prod
@@ -238,5 +238,7 @@ pipelines:
             - aws --version
           onExecute:
             - ls -ltrh ./dependencyState/resources/demo_node_app_git/
+            - aws sts get-caller-identity
+            - aws eks update-kubeconfig --name rk-demo-pub-01 --region us-east-1
             - curl -vk $(kubectl config view -o jsonpath='{.clusters[0].cluster.server}')/healthz
             - kubectl get ns -A
