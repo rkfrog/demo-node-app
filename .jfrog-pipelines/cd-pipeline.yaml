@@ -23,7 +23,7 @@ pipelines:
             type: image
           inputResources:
           - name: demo_node_app_git
-          - name: demo_node_app_prod_incoming_webhook
+          - name: demo_node_app_rt_docker_prod_webhook
           integrations:
           - name: rk_demo_k8s
           - name: auth
