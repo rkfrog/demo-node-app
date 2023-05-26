@@ -237,6 +237,6 @@ pipelines:
             - echo "aws_session_token = $(printenv int_auth_session)" >> $(printenv AWS_SHARED_CREDENTIALS_FILE)
             - aws eks update-kubeconfig --name rk-demo-pub-01 --region us-east-1 --profile default
           onExecute:
-            - curl $(kubectl config view -o jsonpath='{.clusters[0].cluster.server}')/healthz
+            - kubectl cluster-info
             - kubectl get ns -A
             - env
