@@ -240,6 +240,7 @@ pipelines:
             - ls -ltrh ./dependencyState/resources/demo_node_app_git/
             - env | grep aws
             - aws configure list-profiles
+            - echo "aws_session_token=$(printenv int_auth_session)" >> $(printenv AWS_SHARED_CREDENTIALS_FILE)
             - cat $(printenv AWS_SHARED_CREDENTIALS_FILE)
             - aws sts get-caller-identity
             - aws eks update-kubeconfig --name rk-demo-pub-01 --region us-east-1 --profile default
