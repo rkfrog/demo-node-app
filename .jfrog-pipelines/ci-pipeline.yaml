@@ -58,185 +58,153 @@ resources:
 pipelines:
   - name: demo_node_app_jf_ci
     steps:
-  #     - name: get_npm_app_version
-  #       type: Bash
-  #       configuration:
-  #         runtime:
-  #           type: image
-  #           image:
-  #             auto:
-  #               language: node
-  #               version: "18.15"
-  #         inputResources:
-  #         - name: demo_node_app_git
-  #       execution:
-  #         onExecute:
-  #           - ls -ltrh ./dependencyState/resources/demo_node_app_git/
-  #           - NPM_PACKAGE_BUILD_VERSION=$(cat ./dependencyState/resources/demo_node_app_git/package.json | jq -r ."version")
-  #           - add_run_variables NPM_PACKAGE_BUILD_VERSION=$NPM_PACKAGE_BUILD_VERSION
-  #           - set_run_name $NPM_PACKAGE_BUILD_VERSION
-  #           - echo "$NPM_PACKAGE_BUILD_VERSION"
-  #     - name: npm_build
-  #       type: NpmBuild
-  #       configuration:
-  #         affinityGroup: npm_build_publish
-  #         repositoryName: demonode-npm-dev-virtual
-  #         sourceLocation: ./
-  #         integrations:
-  #             - name: rk_jf_rt_saas
-  #         inputSteps:
-  #             - name: get_npm_app_version
-  #         inputResources:
-  #           - name: demo_node_app_git
-  #     - name: npm_publish
-  #       type: NpmPublish
-  #       configuration:
-  #         affinityGroup: npm_build_publish
-  #         repositoryName: demonode-npm-dev-virtual
-  #         forceXrayScan: true
-  #         autoPublishBuildInfo: true
-  #         failOnScan: false
-  #         integrations:
-  #           - name: rk_jf_rt_saas
-  #         inputSteps: 
-  #           - name: npm_build
-  #         outputResources:
-  #           - name: npm_dev_buildinfo
-  #     - name: docker_build
-  #       type: DockerBuild
-  #       configuration:
-  #         affinityGroup: docker_build_push
-  #         dockerImageName: roskad.jfrog.io/demonode-docker-dev-local/demo-node-app
-  #         dockerImageTag: ${NPM_PACKAGE_BUILD_VERSION}
-  #         dockerFileName: Dockerfile
-  #         dockerFileLocation: .
-  #         inputSteps:
-  #             - name: get_npm_app_version
-  #             - name: npm_build
-  #         inputResources:
-  #           - name: demo_node_app_git
-  #         integrations:
-  #           - name: rk_jf_rt_saas
-  #           - name: roskad_docker_registry
-  #     - name: docker_push
-  #       type: DockerPush
-  #       configuration:
-  #         affinityGroup: docker_build_push
-  #         targetRepository: demonode-docker-virtual
-  #         autoPublishBuildInfo: true
-  #         forceXrayScan: true
-  #         failOnScan: false
-  #         integrations:
-  #           - name: rk_jf_rt_saas
-  #           - name: roskad_docker_registry
-  #         inputSteps:
-  #           - name: docker_build
-  #         outputResources:
-  #           - name: docker_dev_buildinfo
-  #           # - name: demo_node_app_dev_docker_image
-  #     - name: npm_build_promote_qa
-  #       type: PromoteBuild
-  #       configuration:
-  #         affinityGroup: npm_build_publish
-  #         targetRepository: demonode-npm-test-local
-  #         includeDependencies: false
-  #         status: "npm-qa-tested"
-  #         comment: "This build has passed all npm QA testing > $run_number"
-  #         copy: true
-  #         inputResources:
-  #           - name: npm_dev_buildinfo
-  #         outputResources:
-  #           - name: npm_qa_promoted_buildinfo
-  #     - name: xray_scan_npm_prod
-  #       type: XrayScan
-  #       configuration:
-  #         affinityGroup: npm_build_publish
-  #         failOnScan: true
-  #         inputResources:
-  #           - name: npm_qa_promoted_buildinfo
-  #         outputResources:
-  #           - name: npm_prod_promoted_buildinfo
-  #     - name: npm_build_promote_prod
-  #       type: PromoteBuild
-  #       configuration:
-  #         affinityGroup: npm_build_publish
-  #         targetRepository: demonode-npm-prod-local
-  #         includeDependencies: false
-  #         status: "npm-prod-ready"
-  #         comment: "This build has passed all npm production testing > $run_number"
-  #         copy: true
-  #         inputSteps:
-  #           - name: xray_scan_npm_prod
-  #         inputResources:
-  #           - name: npm_qa_promoted_buildinfo
-  #         outputResources:
-  #           - name: npm_prod_promoted_buildinfo
-  #     - name: docker_build_promote_qa
-  #       type: PromoteBuild
-  #       configuration:
-  #         affinityGroup: docker_build_push
-  #         targetRepository: demonode-docker-uat-local
-  #         includeDependencies: false
-  #         status: "docker-qa-tested"
-  #         comment: "This build has passed all docker QA testing > $run_number"
-  #         copy: true
-  #         inputResources:
-  #           - name: docker_dev_buildinfo
-  #         outputResources:
-  #           - name: docker_qa_promoted_buildinfo
-  #     - name: xray_scan_docker_prod
-  #       type: XrayScan
-  #       configuration:
-  #         affinityGroup: docker_build_push
-  #         failOnScan: true
-  #         inputResources:
-  #           - name: docker_qa_promoted_buildinfo
-  #         outputResources:
-  #           - name: docker_prod_promoted_buildinfo
-  #     - name: docker_build_promote_prod
-  #       type: PromoteBuild
-  #       configuration:
-  #         affinityGroup: docker_build_push
-  #         targetRepository: demonode-docker-prod-local
-  #         includeDependencies: false
-  #         status: "docker-prod-ready"
-  #         comment: "This build has passed all production testing > $run_number"
-  #         copy: true
-  #         inputSteps:
-  #           - name: xray_scan_docker_prod
-  #         inputResources:
-  #           - name: docker_qa_promoted_buildinfo
-  #         outputResources:
-  #           - name: docker_prod_promoted_buildinfo
-      - name: deploy_to_k8s
+      - name: get_npm_app_version
         type: Bash
         configuration:
           runtime:
             type: image
+            image:
+              auto:
+                language: node
+                version: "18.15"
           inputResources:
           - name: demo_node_app_git
-          integrations:
-          - name: rk_demo_k8s
-          - name: auth
-          - name: demo_cloud
-          # inputSteps:
-          #   - name: docker_build_promote_prod
-          #   - name: npm_build_promote_prod
         execution:
-          onStart:
-            - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-            - chmod +x kubectl
-            - mv kubectl $(which kubectl)
-            - kubectl version --client
-            - kubectl config view
-            - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            - unzip -qq awscliv2.zip
-            - ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update
-            - aws --version
-            - aws configure list
-            - echo "aws_session_token = $(printenv int_auth_session)" >> $(printenv AWS_SHARED_CREDENTIALS_FILE)
-            - aws eks update-kubeconfig --name rk-demo-pub-01 --region us-east-1 --profile default
           onExecute:
-            - kubectl cluster-info
-            - kubectl get ns -A
-            - env
+            - ls -ltrh ./dependencyState/resources/demo_node_app_git/
+            - NPM_PACKAGE_BUILD_VERSION=$(cat ./dependencyState/resources/demo_node_app_git/package.json | jq -r ."version")
+            - add_run_variables NPM_PACKAGE_BUILD_VERSION=$NPM_PACKAGE_BUILD_VERSION
+            - set_run_name $NPM_PACKAGE_BUILD_VERSION
+            - echo "$NPM_PACKAGE_BUILD_VERSION"
+      - name: npm_build
+        type: NpmBuild
+        configuration:
+          affinityGroup: npm_build_publish
+          repositoryName: demonode-npm-dev-virtual
+          sourceLocation: ./
+          integrations:
+              - name: rk_jf_rt_saas
+          inputSteps:
+              - name: get_npm_app_version
+          inputResources:
+            - name: demo_node_app_git
+      - name: npm_publish
+        type: NpmPublish
+        configuration:
+          affinityGroup: npm_build_publish
+          repositoryName: demonode-npm-dev-virtual
+          forceXrayScan: true
+          autoPublishBuildInfo: true
+          failOnScan: false
+          integrations:
+            - name: rk_jf_rt_saas
+          inputSteps: 
+            - name: npm_build
+          outputResources:
+            - name: npm_dev_buildinfo
+      - name: docker_build
+        type: DockerBuild
+        configuration:
+          affinityGroup: docker_build_push
+          dockerImageName: roskad.jfrog.io/demonode-docker-dev-local/demo-node-app
+          dockerImageTag: ${NPM_PACKAGE_BUILD_VERSION}
+          dockerFileName: Dockerfile
+          dockerFileLocation: .
+          inputSteps:
+              - name: get_npm_app_version
+              - name: npm_build
+          inputResources:
+            - name: demo_node_app_git
+          integrations:
+            - name: rk_jf_rt_saas
+            - name: roskad_docker_registry
+      - name: docker_push
+        type: DockerPush
+        configuration:
+          affinityGroup: docker_build_push
+          targetRepository: demonode-docker-virtual
+          autoPublishBuildInfo: true
+          forceXrayScan: true
+          failOnScan: false
+          integrations:
+            - name: rk_jf_rt_saas
+            - name: roskad_docker_registry
+          inputSteps:
+            - name: docker_build
+          outputResources:
+            - name: docker_dev_buildinfo
+            # - name: demo_node_app_dev_docker_image
+      - name: npm_build_promote_qa
+        type: PromoteBuild
+        configuration:
+          affinityGroup: npm_build_publish
+          targetRepository: demonode-npm-test-local
+          includeDependencies: false
+          status: "npm-qa-tested"
+          comment: "This build has passed all npm QA testing > $run_number"
+          copy: true
+          inputResources:
+            - name: npm_dev_buildinfo
+          outputResources:
+            - name: npm_qa_promoted_buildinfo
+      - name: xray_scan_npm_prod
+        type: XrayScan
+        configuration:
+          affinityGroup: npm_build_publish
+          failOnScan: true
+          inputResources:
+            - name: npm_qa_promoted_buildinfo
+          outputResources:
+            - name: npm_prod_promoted_buildinfo
+      - name: npm_build_promote_prod
+        type: PromoteBuild
+        configuration:
+          affinityGroup: npm_build_publish
+          targetRepository: demonode-npm-prod-local
+          includeDependencies: false
+          status: "npm-prod-ready"
+          comment: "This build has passed all npm production testing > $run_number"
+          copy: true
+          inputSteps:
+            - name: xray_scan_npm_prod
+          inputResources:
+            - name: npm_qa_promoted_buildinfo
+          outputResources:
+            - name: npm_prod_promoted_buildinfo
+      - name: docker_build_promote_qa
+        type: PromoteBuild
+        configuration:
+          affinityGroup: docker_build_push
+          targetRepository: demonode-docker-uat-local
+          includeDependencies: false
+          status: "docker-qa-tested"
+          comment: "This build has passed all docker QA testing > $run_number"
+          copy: true
+          inputResources:
+            - name: docker_dev_buildinfo
+          outputResources:
+            - name: docker_qa_promoted_buildinfo
+      - name: xray_scan_docker_prod
+        type: XrayScan
+        configuration:
+          affinityGroup: docker_build_push
+          failOnScan: true
+          inputResources:
+            - name: docker_qa_promoted_buildinfo
+          outputResources:
+            - name: docker_prod_promoted_buildinfo
+      - name: docker_build_promote_prod
+        type: PromoteBuild
+        configuration:
+          affinityGroup: docker_build_push
+          targetRepository: demonode-docker-prod-local
+          includeDependencies: false
+          status: "docker-prod-ready"
+          comment: "This build has passed all production testing > $run_number"
+          copy: true
+          inputSteps:
+            - name: xray_scan_docker_prod
+          inputResources:
+            - name: docker_qa_promoted_buildinfo
+          outputResources:
+            - name: docker_prod_promoted_buildinfo
