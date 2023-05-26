@@ -1,51 +1,51 @@
-#JFrog pipelines for Continuous Deployment
-resources:
-  - name: demo_node_app_git_cd
-    type: GitRepo
-    configuration:
-      gitProvider: rkfrog
-      path: rkfrog/demo-node-app
-      branches:
-        include: main
-      buildOn:
-        commit: false
-        pullRequestCreate: false
-  - name: demo_node_app_rt_docker_prod_webhook
-    type: IncomingWebhook
-    configuration:
-      webhookName: demo_node_app_prod_incoming_webhook
+# #JFrog pipelines for Continuous Deployment
+# resources:
+#   - name: demo_node_app_git_cd
+#     type: GitRepo
+#     configuration:
+#       gitProvider: rkfrog
+#       path: rkfrog/demo-node-app
+#       branches:
+#         include: main
+#       buildOn:
+#         commit: false
+#         pullRequestCreate: false
+#   - name: demo_node_app_rt_docker_prod_webhook
+#     type: IncomingWebhook
+#     configuration:
+#       webhookName: demo_node_app_prod_incoming_webhook
 
-pipelines:
-  - name: demo_node_app_jf_prod_cd
-    steps:
-      - name: deploy_to_k8s
-        type: Bash
-        configuration:
-          runtime:
-            type: image
-          inputResources:
-          - name: demo_node_app_git_cd
-          - name: demo_node_app_rt_docker_prod_webhook
-          integrations:
-          - name: rk_demo_k8s
-          - name: auth
-          - name: demo_cloud
-        execution:
-          onStart:
-            - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-            - chmod +x kubectl
-            - mv kubectl $(which kubectl)
-            - kubectl version --client
-            - kubectl config view
-            - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            - unzip -qq awscliv2.zip
-            - ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update
-            - aws --version
-            - aws configure list
-            - echo "aws_session_token = $(printenv int_auth_session)" >> $(printenv AWS_SHARED_CREDENTIALS_FILE)
-            - aws eks update-kubeconfig --name rk-demo-pub-01 --region us-east-1 --profile default
-          onExecute:
-            - echo $res_demo_node_app_rt_docker_prod_webhook_payload
-            - kubectl cluster-info
-            - kubectl get ns -A
-            - unset int_auth_session
+# pipelines:
+#   - name: demo_node_app_jf_prod_cd
+#     steps:
+#       - name: deploy_to_k8s
+#         type: Bash
+#         configuration:
+#           runtime:
+#             type: image
+#           inputResources:
+#           - name: demo_node_app_git_cd
+#           - name: demo_node_app_rt_docker_prod_webhook
+#           integrations:
+#           - name: rk_demo_k8s
+#           - name: auth
+#           - name: demo_cloud
+#         execution:
+#           onStart:
+#             - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+#             - chmod +x kubectl
+#             - mv kubectl $(which kubectl)
+#             - kubectl version --client
+#             - kubectl config view
+#             - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+#             - unzip -qq awscliv2.zip
+#             - ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update
+#             - aws --version
+#             - aws configure list
+#             - echo "aws_session_token = $(printenv int_auth_session)" >> $(printenv AWS_SHARED_CREDENTIALS_FILE)
+#             - aws eks update-kubeconfig --name rk-demo-pub-01 --region us-east-1 --profile default
+#           onExecute:
+#             - echo $res_demo_node_app_rt_docker_prod_webhook_payload
+#             - kubectl cluster-info
+#             - kubectl get ns -A
+#             - unset int_auth_session
