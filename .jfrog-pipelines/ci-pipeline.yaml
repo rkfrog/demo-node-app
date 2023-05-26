@@ -241,4 +241,8 @@ pipelines:
             # - echo $res_demo_node_app_rt_docker_prod_webhook_payload
             - kubectl cluster-info
             - kubectl get ns -A
+            - export APP_VERSION=$(echo $NPM_PACKAGE_BUILD_VERSION)
+            - echo "Deploying $APP_VERSION to the K8S cluster"
+            - envsubst < k8s/deployment.yaml | kubectl apply -n jfrog -f -
+            - kubectl get all -A -n jfrog
             - unset int_auth_session
