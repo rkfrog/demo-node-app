@@ -218,6 +218,7 @@ pipelines:
           integrations:
           - name: rk_demo_k8s
           - name: auth
+          - name: demo_cloud
           # inputSteps:
           #   - name: docker_build_promote_prod
           #   - name: npm_build_promote_prod
