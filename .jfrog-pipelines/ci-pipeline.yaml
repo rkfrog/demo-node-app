@@ -217,33 +217,27 @@ pipelines:
           - name: demo_node_app_git
           integrations:
           - name: rk_demo_k8s
-          - name: demo_cloud
           - name: auth
           # inputSteps:
           #   - name: docker_build_promote_prod
           #   - name: npm_build_promote_prod
         execution:
           onStart:
-            - which kubectl
-            - kubectl version --client
             - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
             - chmod +x kubectl
             - mv kubectl $(which kubectl)
             - kubectl version --client
             - kubectl config view
-            - aws configure list
-            - aws --version
             - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            - unzip awscliv2.zip
+            - unzip -qq awscliv2.zip
             - ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update
             - aws --version
+            - aws configure list
           onExecute:
-            - ls -ltrh ./dependencyState/resources/demo_node_app_git/
-            - env | grep aws
-            - aws configure list-profiles
+            - echo "aws_access_key_id = $(printenv int_auth_id)" >> $(printenv AWS_SHARED_CREDENTIALS_FILE)
+            - echo "aws_secret_access_key = $(printenv int_auth_key)" >> $(printenv AWS_SHARED_CREDENTIALS_FILE)
             - echo "aws_session_token = $(printenv int_auth_session)" >> $(printenv AWS_SHARED_CREDENTIALS_FILE)
-            - cat $(printenv AWS_SHARED_CREDENTIALS_FILE)
-            - aws sts get-caller-identity
             - aws eks update-kubeconfig --name rk-demo-pub-01 --region us-east-1 --profile default
             - curl -vk $(kubectl config view -o jsonpath='{.clusters[0].cluster.server}')/healthz
             - kubectl get ns -A
+            - env  
