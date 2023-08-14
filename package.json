@@ -43,7 +43,6 @@
     "http-errors": "~1.6.3",
     "minimatch": "~3.0.4",
     "morgan": "~1.9.1",
-    "protobufjs": "^6.11.2",
     "nopp": "1.0.2"
   }
 }
