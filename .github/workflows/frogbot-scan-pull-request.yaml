@@ -24,7 +24,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "16.x"
-
+      - name: Check out repository code 🛎️
+        uses: actions/checkout@v3
       - uses: jfrog/frogbot@v2
         env:
           # [Mandatory]
