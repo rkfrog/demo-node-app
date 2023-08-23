@@ -37,12 +37,13 @@
     "axios": "^1.3.4",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
-    "nodemon": "^2.0.6",
     "ejs": "~2.6.1",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "minimatch": "~3.0.4",
     "morgan": "~1.9.1",
+    "node-emoji": "^2.1.0",
+    "nodemon": "^2.0.6",
     "nopp": "1.0.2"
   }
 }
