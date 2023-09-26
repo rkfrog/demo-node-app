@@ -28,7 +28,7 @@ cd /demo-node-app/
 
 ###  Publish to Artifactory
 ```
-npm config set registry https://roskad.jfrog.io/artifactory/api/npm/demonode-npm-dev-local/
+npm config set registry https://URL/artifactory/api/npm/demonode-npm-dev-local/
 npm login
-npm publish --registry https://roskad.jfrog.io/artifactory/api/npm/demonode-npm-dev-local/
+npm publish --registry https://URL/artifactory/api/npm/demonode-npm-dev-local/
 ```
