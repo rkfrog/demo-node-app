@@ -1,9 +1,7 @@
 # Demo Node.js Application
-
 This is a sample node js application created for demo
 
 ## Stack
-
 Node.js | Express
 
 ## Getting Started
@@ -28,7 +26,7 @@ cd /demo-node-app/
 
 ###  Publish to Artifactory
 ```
-npm config set registry https://roskad.jfrog.io/artifactory/api/npm/demonode-npm-dev-local/
+npm config set registry https://<JFROG_PLATFORM_URL>/artifactory/api/npm/<LOCAL_NPM_REPO_NAME>/
 npm login
-npm publish --registry https://roskad.jfrog.io/artifactory/api/npm/demonode-npm-dev-local/
+npm publish --registry https://<JFROG_PLATFORM_URL>/artifactory/api/npm/<LOCAL_NPM_REPO_NAME>/
 ```
