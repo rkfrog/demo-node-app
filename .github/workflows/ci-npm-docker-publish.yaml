@@ -45,7 +45,7 @@ jobs:
       - name: Capture previous build version
         run: echo NPM_PACKAGE_BUILD_VERSION=$(cat package.json | jq -r ."version") >> $GITHUB_ENV
       - name: Set JF NPM Config
-        run:  jfrog npm-config --repo-deploy=demonode-npm-dev-virtual -repo-resolve=demonode-npm-dev-virtual 
+        run:  jfrog npm-config --repo-deploy=frogs-npm-dev-virtual -repo-resolve=frogs-npm-dev-virtual 
       - name: Install dependencies
         run: jfrog npm ci
         env:
@@ -54,6 +54,9 @@ jobs:
         run: |
           jfrog rt build-add-git
           jfrog rt build-collect-env
+      - name: JFrog audit
+        run: |
+          jfrog audit
       - name: NPM publish 🐸
         run: jfrog npm publish
         env:
@@ -77,12 +80,15 @@ jobs:
       #     JF_URL: ${{ secrets.JF_RK_SA_URL }}
       - name: Docker Build 🐳🐸
         run: |
-          jfrog docker image build --tag ${{ env.JF_URL }}/demonode-docker-virtual/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }} .
+          jfrog docker image build --tag ${{ env.JF_URL }}/frogs-docker-dev-virtual/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }} .
         env:
           JF_URL: ${{ secrets.JF_RK_SA_URL }}
+      - name: docker image scan ${{ env.JF_URL }}/frogs-docker-dev-virtual/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
+        run: |
+          jfrog docker scan frogs-docker-dev-virtual
       - name: Docker Push 🐳🐸
         run: |
-          jfrog docker push ${{ env.JF_URL }}/demonode-docker-virtual/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
+          jfrog docker push ${{ env.JF_URL }}/frogs-docker-dev-virtual/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
         env:
           JF_URL: ${{ secrets.JF_RK_SA_URL }}
       - name: JFrog build publish 🐸
