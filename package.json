@@ -11,7 +11,7 @@
     "major": "npm version major -m \"Upgrade to %s for reasons\" --no-git-tag-version --no-commit-hooks"
   },
   "publishConfig": {
-    "registry": "https://roskad.jfrog.io/artifactory/api/npm/demonode-npm-dev-virtual/"
+    "registry": "https://roskad.jfrog.io/artifactory/api/npm/frogs-npm-dev-virtual/"
   },
   "files": [
     "bin",
@@ -41,11 +41,19 @@
     "express": "~4.16.1",
     "helmet": "^7.0.0",
     "http-errors": "~1.6.3",
+    "lodash": "^4.17.15",
     "minimatch": "~3.0.4",
     "morgan": "~1.9.1",
     "node-emoji": "^2.1.0",
     "nodemon": "^2.0.6",
     "nopp": "1.0.2",
-    "pac-resolver": "^5.0.0"
+    "pac-resolver": "^5.0.0",
+    "@web5/api": "0.8.2",
+    "crypto-browserify": "3.12.0",
+    "next": "13.5.4",
+    "process": "0.11.10",
+    "react": "18",
+    "react-dom": "18",
+    "stream-browserify": "3.0.0"
   }
 }
