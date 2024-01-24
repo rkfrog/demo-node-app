@@ -1,7 +1,7 @@
 replicaCount: 2
 
 image:
-  repository: roskad.jfrog.io/demonode-docker-prod-local/demo-node-app
+  repository: soleng.jfrog.io/frogs-us-docker-virtual/demo-node-app
   tag: latest
 
 imagePullSecrets:
