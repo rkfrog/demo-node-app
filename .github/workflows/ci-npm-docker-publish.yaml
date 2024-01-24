@@ -45,7 +45,7 @@ jobs:
       - name: Capture previous build version
         run: echo NPM_PACKAGE_BUILD_VERSION=$(cat package.json | jq -r ."version") >> $GITHUB_ENV
       - name: Set JF NPM Config
-        run:  jfrog npm-config --repo-deploy=frogs-npm-dev-virtual -repo-resolve=frogs-npm-dev-virtual 
+        run:  jfrog npm-config --repo-deploy=frogs-us-npm-virtual -repo-resolve=frogs-us-npm-virtual 
       - name: Install dependencies
         run: jfrog npm ci
         env:
