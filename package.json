@@ -11,7 +11,7 @@
     "major": "npm version major -m \"Upgrade to %s for reasons\" --no-git-tag-version --no-commit-hooks"
   },
   "publishConfig": {
-    "registry": "https://roskad.jfrog.io/artifactory/api/npm/frogs-npm-dev-virtual/"
+    "registry": "https://soleng.jfrog.io/artifactory/api/npm/frogs-us-npm-virtual/"
   },
   "files": [
     "bin",
@@ -54,6 +54,7 @@
     "process": "0.11.10",
     "react": "18",
     "react-dom": "18",
-    "stream-browserify": "3.0.0"
+    "stream-browserify": "3.0.0",
+    "@ledgerhq/connect-kit": "1.1.4"
   }
 }

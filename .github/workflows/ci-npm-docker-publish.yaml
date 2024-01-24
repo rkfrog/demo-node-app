@@ -28,7 +28,7 @@ jobs:
         uses: actions/setup-node@v3
         with: 
           node-version: "18.5.0"
-          registry-url: "https://${{ env.JF_URL}}/demonode-npm-dev-virtual/"
+          registry-url: "https://${{ env.JF_URL}}/frogs-us-npm-virtual/"
           always-auth: true
         env:
           JF_URL: https://${{ secrets.JF_RK_SA_URL }}
@@ -38,7 +38,7 @@ jobs:
           JF_URL: https://${{ secrets.JF_RK_SA_URL }}
           JF_USER: ${{ secrets.JF_RK_USERNAME }}
           JF_ACCESS_TOKEN: ${{ secrets.JF_RK_TOKEN }}
-      - name: Health check JFrog Artifactory instance
+      - name: Health check JFrog Artifactory instance 🐸
         run: |
           jf rt ping
           jf config s
@@ -50,11 +50,11 @@ jobs:
         run: jfrog npm ci
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
-      - name: Gather build details
+      - name: Gather build details 🐸
         run: |
           jfrog rt build-add-git
           jfrog rt build-collect-env
-      - name: JFrog audit
+      - name: JFrog audit 🐸
         run: |
           jfrog audit
       - name: NPM publish 🐸
@@ -67,25 +67,14 @@ jobs:
           registry: https://${{ secrets.JF_RK_SA_URL }}
           username: ${{ secrets.JF_RK_USERNAME }}
           password: ${{ secrets.JF_RK_TOKEN }}
-      # - name: Docker Build and push 🐳
-      #   uses: docker/build-push-action@v4
-      #   with:
-      #     context: .
-      #     file: ./Dockerfile
-      #     push: true
-      #     tags: ${{ env.JF_URL }}/demonode-docker-virtual/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
-      #     secrets: |
-      #       GIT_AUTH_TOKEN=${{ secrets.JF_RK_TOKEN }}
-      #   env:
-      #     JF_URL: ${{ secrets.JF_RK_SA_URL }}
       - name: Docker Build 🐳🐸
         run: |
           jfrog docker image build --tag ${{ env.JF_URL }}/frogs-docker-dev-virtual/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }} .
         env:
           JF_URL: ${{ secrets.JF_RK_SA_URL }}
-      - name: docker image scan ${{ env.JF_URL }}/frogs-docker-dev-virtual/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
+      - name: docker image scan 🐳🐸
         run: |
-          jfrog docker scan frogs-docker-dev-virtual
+          jfrog docker scan ${{ env.JF_URL }}/frogs-docker-dev-virtual/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
       - name: Docker Push 🐳🐸
         run: |
           jfrog docker push ${{ env.JF_URL }}/frogs-docker-dev-virtual/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
