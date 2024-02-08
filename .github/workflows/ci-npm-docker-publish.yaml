@@ -28,7 +28,7 @@ jobs:
         uses: actions/setup-node@v3
         with: 
           node-version: "18.5.0"
-          registry-url: "https://${{ env.JF_URL}}/${{ env.NPM_JF_RT_REPO }}/"
+          registry-url: "https://${{ env.JF_URL}}/$NPM_JF_RT_REPO/"
           always-auth: true
         env:
           JF_URL: https://${{ secrets.JF_RK_SA_URL }}
@@ -45,7 +45,7 @@ jobs:
       - name: Capture previous build version
         run: echo NPM_PACKAGE_BUILD_VERSION=$(cat package.json | jq -r ."version") >> $GITHUB_ENV
       - name: Set JF NPM Config
-        run:  jfrog npm-config --repo-deploy=${{ env.NPM_JF_RT_REPO }} -repo-resolve=${{ env.NPM_JF_RT_REPO }}
+        run:  jfrog npm-config --repo-deploy=$NPM_JF_RT_REPO -repo-resolve=$NPM_JF_RT_REPO
       - name: Install dependencies
         run: jfrog npm ci
         env:
@@ -69,15 +69,15 @@ jobs:
           password: ${{ secrets.JF_RK_TOKEN }}
       - name: Docker Build 🐳🐸
         run: |
-          jfrog docker image build --tag ${{ env.JF_URL }}/${{ env.DOCKER_JF_RT_REPO }}/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }} .
+          jfrog docker image build --tag ${{ env.JF_URL }}/$DOCKER_JF_RT_REPO/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }} .
         env:
           JF_URL: ${{ secrets.JF_RK_SA_URL }}
       - name: docker image scan 🐳🐸
         run: |
-          jfrog docker scan ${{ env.JF_URL }}/${{ env.DOCKER_JF_RT_REPO }}/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
+          jfrog docker scan ${{ env.JF_URL }}/$DOCKER_JF_RT_REPO/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
       - name: Docker Push 🐳🐸
         run: |
-          jfrog docker push ${{ env.JF_URL }}/${{ env.DOCKER_JF_RT_REPO }}/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
+          jfrog docker push ${{ env.JF_URL }}/$DOCKER_JF_RT_REPO/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
         env:
           JF_URL: ${{ secrets.JF_RK_SA_URL }}
       - name: JFrog build publish 🐸
