@@ -42,6 +42,8 @@ jobs:
         run: |
           jf rt ping
           jf config s
+          env
+          echo $NPM_JF_RT_REPO $DOCKER_JF_RT_REPO $JF_RT_PROJECT_NAME
       - name: Capture previous build version
         run: echo NPM_PACKAGE_BUILD_VERSION=$(cat package.json | jq -r ."version") >> $GITHUB_ENV
       - name: Set JF NPM Config
@@ -53,12 +55,12 @@ jobs:
       - name: Gather build details 🐸
         run: |
           jfrog rt build-add-git
-          jfrog rt build-collect-env --project ${{ env.JF_RT_PROJECT_NAME }}
+          jfrog rt build-collect-env --project $JF_RT_PROJECT_NAME
       - name: JFrog audit 🐸
         run: |
           jfrog audit
       - name: NPM publish 🐸
-        run: jfrog npm publish --project ${{ env.JF_RT_PROJECT_NAME }}
+        run: jfrog npm publish --project $JF_RT_PROJECT_NAME
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
       - name: Login to JFrog Docker repo
@@ -81,7 +83,7 @@ jobs:
         env:
           JF_URL: ${{ secrets.JF_RK_SA_URL }}
       - name: JFrog build publish 🐸
-        run: jfrog rt build-publish --project ${{ env.JF_RT_PROJECT_NAME }}
+        run: jfrog rt build-publish --project $JF_RT_PROJECT_NAME
       - name: JFrog build scan 🐸
         run: |
           sleep 30
