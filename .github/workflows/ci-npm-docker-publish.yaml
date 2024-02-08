@@ -14,6 +14,10 @@ on:
 jobs:
   npm-docker-build-and-publish-dev:
     runs-on: ubuntu-20.04
+    env:
+      NPM_JF_RT_REPO: ${{ env.NPM_JF_RT_REPO }}
+      DOCKER_JF_RT_REPO: ${{ env.DOCKER_JF_RT_REPO }}
+      JF_RT_PROJECT_NAME: ${{ env.JF_RT_PROJECT_NAME }}
     steps:
       - run: |
           echo "The job was triggered by a ${{ github.event_name }} event."
@@ -42,12 +46,10 @@ jobs:
         run: |
           jf rt ping
           jf config s
-          env
-          echo $NPM_JF_RT_REPO $DOCKER_JF_RT_REPO $JF_RT_PROJECT_NAME
       - name: Capture previous build version
         run: echo NPM_PACKAGE_BUILD_VERSION=$(cat package.json | jq -r ."version") >> $GITHUB_ENV
       - name: Set JF NPM Config
-        run:  jfrog npm-config --repo-deploy=$NPM_JF_RT_REPO -repo-resolve=$NPM_JF_RT_REPO; cat ~/.npmrc
+        run:  jfrog npm-config --repo-deploy=$NPM_JF_RT_REPO -repo-resolve=$NPM_JF_RT_REPO
       - name: Install dependencies
         run: jfrog npm ci
         env:
