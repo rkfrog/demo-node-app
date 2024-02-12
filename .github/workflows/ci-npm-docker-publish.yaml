@@ -15,9 +15,9 @@ jobs:
   npm-docker-build-and-publish-dev:
     runs-on: ubuntu-20.04
     env:
-      NPM_JF_RT_REPO: ${{ var.NPM_JF_RT_REPO }}
-      DOCKER_JF_RT_REPO: ${{ var.DOCKER_JF_RT_REPO }}
-      JF_RT_PROJECT_NAME: ${{ var.JF_RT_PROJECT_NAME }}
+      NPM_JF_RT_REPO: ${{ secrets.NPM_JF_RT_REPO }}
+      DOCKER_JF_RT_REPO: ${{ secrets.DOCKER_JF_RT_REPO }}
+      JF_RT_PROJECT_NAME: ${{ secrets.JF_RT_PROJECT_NAME }}
     steps:
       - run: |
           echo "The job was triggered by a ${{ github.event_name }} event."
