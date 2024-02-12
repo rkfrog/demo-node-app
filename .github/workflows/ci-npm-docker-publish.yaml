@@ -46,6 +46,8 @@ jobs:
         run: |
           jf rt ping
           jf config s
+          echo $NPM_JF_RT_REPO $DOCKER_JF_RT_REPO $JF_RT_PROJECT_NAME
+          env
       - name: Capture previous build version
         run: echo NPM_PACKAGE_BUILD_VERSION=$(cat package.json | jq -r ."version") >> $GITHUB_ENV
       - name: Set JF NPM Config
