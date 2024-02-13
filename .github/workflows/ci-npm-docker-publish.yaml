@@ -27,7 +27,7 @@ jobs:
           echo "${{ github.repository }} repository has been cloned to the runner."
       - name: List files in the repository
         run: |
-          ls -ltrh ${{ github.workspace }}
+          ls -la ${{ github.workspace }}
       - name: Use Node.js
         uses: actions/setup-node@v3
         with: 
@@ -39,12 +39,16 @@ jobs:
           JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
       - name: Health check JFrog Artifactory instance 🐸
         run: |
-          jf rt ping
-          jf config s
+          jfrog rt ping
+          jfrog config show
       - name: Capture previous build version
         run: echo NPM_PACKAGE_BUILD_VERSION=$(cat package.json | jq -r ."version") >> $GITHUB_ENV
       - name: Set JF NPM Config
-        run:  jfrog npm-config --repo-deploy=$NPM_JF_RT_REPO -repo-resolve=$NPM_JF_RT_REPO
+        run:  |
+          jfrog npm-config --repo-deploy=$NPM_JF_RT_REPO -repo-resolve=$NPM_JF_RT_REPO
+          npm config list
+          ls -la
+          ls -la .jfrog/
       - name: Install dependencies
         run: jfrog npm ci
       - name: Gather build details 🐸
