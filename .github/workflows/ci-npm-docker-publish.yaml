@@ -1,92 +1,85 @@
 name: demo-node-app-npm-publish
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    types: 
-      - closed
-    branches:
-      - main
-  workflow_dispatch:
+	push:
+		branches:
+			- main
+	pull_request:
+		types: 
+			- closed
+		branches:
+			- main
+	workflow_dispatch:
 
 jobs:
-  npm-docker-build-and-publish-dev:
-    runs-on: ubuntu-20.04
-    env:
-      NPM_JF_RT_REPO: ${{ vars.NPM_JF_RT_REPO }}
-      DOCKER_JF_RT_REPO: ${{ vars.DOCKER_JF_RT_REPO }}
-      JF_RT_PROJECT_NAME: ${{ vars.JF_RT_PROJECT_NAME }}
-    steps:
-      - run: |
-          echo "The job was triggered by a ${{ github.event_name }} event."
-      - name: Check out repository code 🛎️
-        uses: actions/checkout@v3
-      - run: |
-          echo "${{ github.repository }} repository has been cloned to the runner."
-      - name: List files in the repository
-        run: |
-          ls -ltrh ${{ github.workspace }}
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-        with: 
-          node-version: "18.5.0"
-          registry-url: "https://${{ env.JF_URL}}/$NPM_JF_RT_REPO/"
-          always-auth: true
-        env:
-          JF_URL: https://${{ secrets.JF_RK_SA_URL }}
-      - name: JFrog CLI setup 🐸
-        uses: jfrog/setup-jfrog-cli@v3
-        env:
-          JF_URL: https://${{ secrets.JF_RK_SA_URL }}
-          JF_USER: ${{ secrets.JF_RK_USERNAME }}
-          JF_ACCESS_TOKEN: ${{ secrets.JF_RK_TOKEN }}
-      - name: Health check JFrog Artifactory instance 🐸
-        run: |
-          jf rt ping
-          jf config s
-      - name: Capture previous build version
-        run: echo NPM_PACKAGE_BUILD_VERSION=$(cat package.json | jq -r ."version") >> $GITHUB_ENV
-      - name: Set JF NPM Config
-        run:  jfrog npm-config --repo-deploy=$NPM_JF_RT_REPO -repo-resolve=$NPM_JF_RT_REPO
-      - name: Install dependencies
-        run: jfrog npm ci
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
-      - name: Gather build details 🐸
-        run: |
-          jfrog rt build-add-git
-          jfrog rt build-collect-env --project $JF_RT_PROJECT_NAME
-      - name: JFrog audit 🐸
-        run: |
-          jfrog audit
-      - name: NPM publish 🐸
-        run: jfrog npm publish --project $JF_RT_PROJECT_NAME
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_RK_JRT_NPM_VIRTUAL_TOKEN }}
-      - name: Login to JFrog Docker repo
-        uses: docker/login-action@v2
-        with:
-          registry: https://${{ secrets.JF_RK_SA_URL }}
-          username: ${{ secrets.JF_RK_USERNAME }}
-          password: ${{ secrets.JF_RK_TOKEN }}
-      - name: Docker Build 🐳🐸
-        run: |
-          jfrog docker image build --tag ${{ env.JF_URL }}/$DOCKER_JF_RT_REPO/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }} .
-        env:
-          JF_URL: ${{ secrets.JF_RK_SA_URL }}
-      - name: docker image scan 🐳🐸
-        run: |
-          jfrog docker scan ${{ env.JF_URL }}/$DOCKER_JF_RT_REPO/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
-      - name: Docker Push 🐳🐸
-        run: |
-          jfrog docker push ${{ env.JF_URL }}/$DOCKER_JF_RT_REPO/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
-        env:
-          JF_URL: ${{ secrets.JF_RK_SA_URL }}
-      - name: JFrog build publish 🐸
-        run: jfrog rt build-publish --project $JF_RT_PROJECT_NAME
-      - name: JFrog build scan 🐸
-        run: |
-          sleep 30
-          jfrog bs ${{ github.workflow }} ${{ github.run_number }} --vuln=true
+	npm-docker-build-and-publish-dev:
+		runs-on: ubuntu-20.04
+		env:
+			NPM_JF_RT_REPO: ${{ vars.NPM_JF_RT_REPO }}
+			DOCKER_JF_RT_REPO: ${{ vars.DOCKER_JF_RT_REPO }}
+			JF_RT_PROJECT_NAME: ${{ vars.JF_RT_PROJECT_NAME }}
+		steps:
+			- run: |
+					echo "The job was triggered by a ${{ github.event_name }} event."
+			- name: Check out repository code 🛎️
+				uses: actions/checkout@v3
+			- run: |
+					echo "${{ github.repository }} repository has been cloned to the runner."
+			- name: List files in the repository
+				run: |
+					ls -ltrh ${{ github.workspace }}
+			- name: Use Node.js
+				uses: actions/setup-node@v3
+				with: 
+					node-version: "18.5.0"
+			- name: JFrog CLI setup 🐸
+				uses: jfrog/setup-jfrog-cli@v3
+				env:
+					JF_URL: https://${{ secrets.JF_PLATFORM_URL }}
+					JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
+			- name: Health check JFrog Artifactory instance 🐸
+				run: |
+					jf rt ping
+					jf config s
+			- name: Capture previous build version
+				run: echo NPM_PACKAGE_BUILD_VERSION=$(cat package.json | jq -r ."version") >> $GITHUB_ENV
+			- name: Set JF NPM Config
+				run:  jfrog npm-config --repo-deploy=$NPM_JF_RT_REPO -repo-resolve=$NPM_JF_RT_REPO
+			- name: Install dependencies
+				run: jfrog npm ci
+			- name: Gather build details 🐸
+				run: |
+					jfrog rt build-add-git --project $JF_RT_PROJECT_NAME
+					jfrog rt build-collect-env --project $JF_RT_PROJECT_NAME
+			# - name: JFrog audit 🐸
+			#   run: |
+			#     jfrog audit
+			- name: NPM publish 🐸
+				run: jfrog npm publish --project $JF_RT_PROJECT_NAME
+			- name: Login to JFrog Docker repo
+				uses: docker/login-action@v3
+				with:
+					registry: https://${{ secrets.JF_PLATFORM_URL }}
+					username: ${{ secrets.JF_USERNAME }}
+					password: ${{ secrets.JF_ACCESS_TOKEN }}
+			- name: Docker Build 🐳🐸
+				run: |
+					jfrog docker image build --tag ${{ env.JF_URL }}/$DOCKER_JF_RT_REPO/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }} .
+				env:
+					JF_URL: ${{ secrets.JF_PLATFORM_URL }}
+			- name: JFrog build publish 🐸
+				run: jfrog rt build-docker-create $DOCKER_JF_RT_REPO -image-file=${{ env.JF_URL }}/$DOCKER_JF_RT_REPO/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }} --project $JF_RT_PROJECT_NAME
+			- name: docker image scan 🐳🐸
+				run: |
+					jfrog docker scan ${{ env.JF_URL }}/$DOCKER_JF_RT_REPO/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
+			- name: Docker Push 🐳🐸
+				run: |
+					jfrog docker push ${{ env.JF_URL }}/$DOCKER_JF_RT_REPO/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
+				env:
+					JF_URL: ${{ secrets.JF_PLATFORM_URL }}
+			- name: JFrog build publish 🐸
+				run: jfrog rt build-publish --project $JF_RT_PROJECT_NAME
+			- name: JFrog build scan 🐸
+				run: |
+					sleep 30
+					jfrog bs ${{ github.workflow }} ${{ github.run_number }} --vuln=true
