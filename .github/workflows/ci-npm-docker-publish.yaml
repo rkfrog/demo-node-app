@@ -33,7 +33,7 @@ jobs:
         with: 
           node-version: "18.5.0"
       - name: JFrog CLI setup 🐸
-        uses: jfrog/setup-jfrog-cli@v3
+        uses: jfrog/setup-jfrog-cli@v4
         env:
           JF_URL: https://${{ secrets.JF_PLATFORM_URL }}
           JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
@@ -46,10 +46,7 @@ jobs:
       - name: Set JF NPM Config
         run:  |
           jfrog npm-config --repo-deploy=$NPM_JF_RT_REPO -repo-resolve=$NPM_JF_RT_REPO
-          npm config list
-          ls -la
-          ls -la .jfrog/projects
-          cat .jfrog/projects/npm.yaml
+          jfrog npm config list | jq -r .registry
       - name: Install dependencies
         run: jfrog npm ci
       - name: Gather build details 🐸
