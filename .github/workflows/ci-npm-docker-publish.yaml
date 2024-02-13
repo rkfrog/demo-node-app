@@ -48,7 +48,8 @@ jobs:
           jfrog npm-config --repo-deploy=$NPM_JF_RT_REPO -repo-resolve=$NPM_JF_RT_REPO
           npm config list
           ls -la
-          ls -la .jfrog/
+          ls -la .jfrog/projects
+          cat .jfrog/projects/npm.yaml
       - name: Install dependencies
         run: jfrog npm ci
       - name: Gather build details 🐸

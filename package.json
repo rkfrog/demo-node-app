@@ -10,9 +10,6 @@
     "minor": "npm version minor -m \"Upgrade to %s for reasons\" --no-git-tag-version --no-commit-hooks",
     "major": "npm version major -m \"Upgrade to %s for reasons\" --no-git-tag-version --no-commit-hooks"
   },
-  "publishConfig": {
-    "registry": "https://soleng.jfrog.io/artifactory/api/npm/frogs-us-npm-virtual/"
-  },
   "files": [
     "bin",
     "public",
