@@ -78,6 +78,8 @@ jobs:
       - name: docker image scan 🐳🐸
         run: |
           jfrog docker scan ${{ env.JF_URL }}/$DOCKER_JF_RT_REPO/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
+        env:
+          JF_URL: ${{ secrets.JF_PLATFORM_URL }}
       - name: Docker Push 🐳🐸
         run: |
           jfrog docker push ${{ env.JF_URL }}/$DOCKER_JF_RT_REPO/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
