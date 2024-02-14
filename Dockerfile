@@ -1,5 +1,6 @@
 # Base image from 
-FROM roskad.jfrog.io/demonode-docker-virtual/node:18-alpine
+# FROM INSTANCE_NAME.jfrog.io/frogs-docker-dev-virtual/node:18-alpine
+FROM ${REGISTRY_URL}/${DOCKER_REPO_NAME}/node:18-alpine
 
 # Create app directory
 WORKDIR /usr/src/app
