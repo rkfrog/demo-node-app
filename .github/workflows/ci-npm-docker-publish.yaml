@@ -58,6 +58,8 @@ jobs:
       #     jfrog audit
       - name: NPM publish 🐸
         run: jfrog npm publish --project $JF_RT_PROJECT_NAME
+      - name: JFrog build publish NPM 🐸
+        run: jfrog rt build-publish --project $JF_RT_PROJECT_NAME
       - name: Login to JFrog Docker repo
         uses: docker/login-action@v3
         with:
@@ -69,9 +71,11 @@ jobs:
           jfrog docker image build --tag ${{ env.JF_URL }}/$DOCKER_JF_RT_REPO/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }} --build-arg="REGISTRY_URL=${{ env.JF_URL }}" --build-arg="DOCKER_REPO_NAME=$DOCKER_JF_RT_REPO" .
         env:
           JF_URL: ${{ secrets.JF_PLATFORM_URL }}
-      - name: JFrog build publish 🐸
-        run: jfrog rt build-docker-create $DOCKER_JF_RT_REPO -image-file=${{ env.JF_URL }}/$DOCKER_JF_RT_REPO/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }} --project $JF_RT_PROJECT_NAME
-      - name: docker image scan 🐳🐸
+      - name: JFrog build publish docker 🐸
+        run: jfrog rt build-docker-create $DOCKER_JF_RT_REPO --image-file=${{ env.JF_URL }}/$DOCKER_JF_RT_REPO/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }} --project $JF_RT_PROJECT_NAME
+        env:
+          JF_URL: ${{ secrets.JF_PLATFORM_URL }}
+        - name: docker image scan 🐳🐸
         run: |
           jfrog docker scan ${{ env.JF_URL }}/$DOCKER_JF_RT_REPO/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
       - name: Docker Push 🐳🐸
