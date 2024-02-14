@@ -75,7 +75,7 @@ jobs:
         run: jfrog rt build-docker-create $DOCKER_JF_RT_REPO --image-file=${{ env.JF_URL }}/$DOCKER_JF_RT_REPO/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }} --project $JF_RT_PROJECT_NAME
         env:
           JF_URL: ${{ secrets.JF_PLATFORM_URL }}
-        - name: docker image scan 🐳🐸
+      - name: docker image scan 🐳🐸
         run: |
           jfrog docker scan ${{ env.JF_URL }}/$DOCKER_JF_RT_REPO/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
       - name: Docker Push 🐳🐸
