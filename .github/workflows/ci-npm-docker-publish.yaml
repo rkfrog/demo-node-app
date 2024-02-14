@@ -48,18 +48,18 @@ jobs:
           jfrog npm-config --repo-deploy=$NPM_JF_RT_REPO -repo-resolve=$NPM_JF_RT_REPO
           jfrog npm config list | jq -r .registry
       - name: Install dependencies
-        run: jfrog npm ci
+        run: jfrog npm ci --build-name $JFROG_CLI_BUILD_NAME --build-number $JFROG_CLI_BUILD_NUMBER --module npm-build
+      # - name: JFrog audit 🐸
+      #   run: |
+      #     jfrog audit
       - name: Gather build details 🐸
         run: |
           jfrog rt build-add-git --project $JF_RT_PROJECT_NAME
           jfrog rt build-collect-env --project $JF_RT_PROJECT_NAME
-      # - name: JFrog audit 🐸
-      #   run: |
-      #     jfrog audit
       - name: NPM publish 🐸
-        run: jfrog npm publish --project $JF_RT_PROJECT_NAME
+        run: jfrog npm publish  --project $JF_RT_PROJECT_NAME --build-name $JFROG_CLI_BUILD_NAME --build-number $JFROG_CLI_BUILD_NUMBER --module npm-build
       - name: JFrog build publish NPM 🐸
-        run: jfrog rt build-publish --project $JF_RT_PROJECT_NAME
+        run: jfrog rt build-publish --project $JF_RT_PROJECT_NAME $JFROG_CLI_BUILD_NAME $JFROG_CLI_BUILD_NUMBER
       - name: Login to JFrog Docker repo
         uses: docker/login-action@v3
         with:
@@ -68,7 +68,14 @@ jobs:
           password: ${{ secrets.JF_ACCESS_TOKEN }}
       - name: Docker Build 🐳🐸
         run: |
-          jfrog docker image build --tag ${{ env.JF_URL }}/$DOCKER_JF_RT_REPO/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }} --build-arg="REGISTRY_URL=${{ env.JF_URL }}" --build-arg="DOCKER_REPO_NAME=$DOCKER_JF_RT_REPO" .
+          jfrog docker image build \
+            --tag ${{ env.JF_URL }}/$DOCKER_JF_RT_REPO/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }} \
+            --build-name $JFROG_CLI_BUILD_NAME \
+            --build-number $JFROG_CLI_BUILD_NUMBER \
+            --module docker-build
+            --build-arg="REGISTRY_URL=${{ env.JF_URL }}" \
+            --build-arg="DOCKER_REPO_NAME=$DOCKER_JF_RT_REPO" \
+            .
         env:
           JF_URL: ${{ secrets.JF_PLATFORM_URL }}
       # - name: JFrog build publish docker 🐸
@@ -86,8 +93,8 @@ jobs:
         env:
           JF_URL: ${{ secrets.JF_PLATFORM_URL }}
       - name: JFrog build publish 🐸
-        run: jfrog rt build-publish --project $JF_RT_PROJECT_NAME
+        run: jfrog rt build-publish --project $JF_RT_PROJECT_NAME $JFROG_CLI_BUILD_NAME $JFROG_CLI_BUILD_NUMBER
       - name: JFrog build scan 🐸
         run: |
           sleep 30
-          jfrog bs ${{ github.workflow }} ${{ github.run_number }} --vuln=true
+          jfrog bs $JFROG_CLI_BUILD_NAME $JFROG_CLI_BUILD_NUMBER --vuln=true
