@@ -1,5 +1,7 @@
 # Base image from 
 # FROM INSTANCE_NAME.jfrog.io/frogs-docker-dev-virtual/node:18-alpine
+ARG REGISTRY_URL DOCKER_REPO_NAME
+
 FROM ${REGISTRY_URL}/${DOCKER_REPO_NAME}/node:18-alpine
 
 # Create app directory
