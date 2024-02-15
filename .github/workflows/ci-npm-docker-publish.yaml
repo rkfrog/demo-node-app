@@ -46,7 +46,7 @@ jobs:
       - name: Set JF NPM Config
         run:  |
           jfrog npm-config --repo-deploy=$NPM_JF_RT_REPO -repo-resolve=$NPM_JF_RT_REPO
-          jfrog npm config set registry http://${{ env.JF_URL }}/artifactory/api/npm/$NPM_JF_RT_REPO/
+          jfrog npm config set registry https://${{ env.JF_URL }}/artifactory/api/npm/$NPM_JF_RT_REPO/
           jfrog npm config list | jq -r .registry
         env:
           JF_URL: ${{ secrets.JF_PLATFORM_URL }}
