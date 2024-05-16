@@ -57,7 +57,7 @@ jobs:
       #     jfrog audit
       - name: Gather build details 🐸
         run: |
-          jfrog rt build-add-git $JFROG_CLI_BUILD_NAME $JFROG_CLI_BUILD_NUMBER --project $JF_RT_PROJECT_NAME
+          jfrog rt build-add-git $JFROG_CLI_BUILD_NAME $JFROG_CLI_BUILD_NUMBER
           jfrog rt build-collect-env $JFROG_CLI_BUILD_NAME $JFROG_CLI_BUILD_NUMBER --project $JF_RT_PROJECT_NAME
           jfrog rt build-add-dependencies --module npm-build --project $JF_RT_PROJECT_NAME $JFROG_CLI_BUILD_NAME $JFROG_CLI_BUILD_NUMBER
       - name: NPM publish 🐸
