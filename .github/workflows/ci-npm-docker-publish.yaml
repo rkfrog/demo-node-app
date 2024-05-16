@@ -52,14 +52,17 @@ jobs:
           JF_URL: ${{ secrets.JF_PLATFORM_URL }}
       - name: Install dependencies
         run: jfrog npm i --build-name $JFROG_CLI_BUILD_NAME --build-number $JFROG_CLI_BUILD_NUMBER --module npm-build
-      # - name: JFrog audit 🐸
-      #   run: |
-      #     jfrog audit
-      - name: Gather build details 🐸
+      - name: JFrog audit 🐸
         run: |
-          # jfrog rt build-add-git $JFROG_CLI_BUILD_NAME $JFROG_CLI_BUILD_NUMBER
-          jfrog rt build-collect-env $JFROG_CLI_BUILD_NAME $JFROG_CLI_BUILD_NUMBER --project $JF_RT_PROJECT_NAME
-          jfrog rt build-add-dependencies --module npm-build --project $JF_RT_PROJECT_NAME $JFROG_CLI_BUILD_NAME $JFROG_CLI_BUILD_NUMBER
+          jfrog audit
+      - name: JFrog Curation audit
+        run: |
+          jf curation-audit
+      # - name: Gather build details 🐸
+      #   run: |
+      #     jfrog rt build-add-git $JFROG_CLI_BUILD_NAME $JFROG_CLI_BUILD_NUMBER
+      #     jfrog rt build-collect-env $JFROG_CLI_BUILD_NAME $JFROG_CLI_BUILD_NUMBER --project $JF_RT_PROJECT_NAME
+      #     jfrog rt build-add-dependencies --module npm-build --project $JF_RT_PROJECT_NAME $JFROG_CLI_BUILD_NAME $JFROG_CLI_BUILD_NUMBER
       - name: NPM publish 🐸
         run: jfrog npm publish  --project $JF_RT_PROJECT_NAME --build-name $JFROG_CLI_BUILD_NAME --build-number $JFROG_CLI_BUILD_NUMBER --module npm-build
       - name: JFrog build publish NPM 🐸
