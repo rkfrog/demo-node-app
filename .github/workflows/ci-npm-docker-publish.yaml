@@ -59,10 +59,6 @@ jobs:
       #     jf curation-audit
       - name: Install dependencies
         run: jfrog npm ci --build-name $JFROG_CLI_BUILD_NAME --build-number $JFROG_CLI_BUILD_NUMBER --module npm-build --project $JF_RT_PROJECT_NAME
-      - name: Gather build details 🐸
-        run: |
-          jfrog rt build-add-git $JFROG_CLI_BUILD_NAME $JFROG_CLI_BUILD_NUMBER ./ --project $JF_RT_PROJECT_NAME
-          jfrog rt build-collect-env $JFROG_CLI_BUILD_NAME $JFROG_CLI_BUILD_NUMBER --project $JF_RT_PROJECT_NAME
       - name: NPM publish 🐸
         run: jfrog npm publish  --project $JF_RT_PROJECT_NAME --build-name $JFROG_CLI_BUILD_NAME --build-number $JFROG_CLI_BUILD_NUMBER --module npm-build
       - name: JFrog build publish NPM 🐸
@@ -94,9 +90,13 @@ jobs:
       #     jfrog rt build-docker-create $DOCKER_JF_RT_REPO --image-file=${{ env.JF_URL }}/$DOCKER_JF_RT_REPO/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }} --project $JF_RT_PROJECT_NAME --build-name $JFROG_CLI_BUILD_NAME --build-number $JFROG_CLI_BUILD_NUMBER --module docker-build
       #   env:
       #     JF_URL: ${{ secrets.JF_PLATFORM_URL }}
+      - name: Gather build details 🐸
+        run: |
+          jfrog rt build-add-git $JFROG_CLI_BUILD_NAME $JFROG_CLI_BUILD_NUMBER ./ --project $JF_RT_PROJECT_NAME
+          jfrog rt build-collect-env $JFROG_CLI_BUILD_NAME $JFROG_CLI_BUILD_NUMBER --project $JF_RT_PROJECT_NAME
       - name: JFrog build publish 🐸
         run: jfrog rt build-publish --project $JF_RT_PROJECT_NAME $JFROG_CLI_BUILD_NAME $JFROG_CLI_BUILD_NUMBER
       - name: JFrog build scan 🐸
         run: |
-          sleep 30
+          sleep 60
           jfrog bs $JFROG_CLI_BUILD_NAME $JFROG_CLI_BUILD_NUMBER --vuln=true
