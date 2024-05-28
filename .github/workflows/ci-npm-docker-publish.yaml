@@ -61,8 +61,8 @@ jobs:
         run: jfrog npm ci --build-name $JFROG_CLI_BUILD_NAME --build-number $JFROG_CLI_BUILD_NUMBER --module npm-build --project $JF_RT_PROJECT_NAME
       - name: NPM publish 🐸
         run: jfrog npm publish  --project $JF_RT_PROJECT_NAME --build-name $JFROG_CLI_BUILD_NAME --build-number $JFROG_CLI_BUILD_NUMBER --module npm-build
-      - name: JFrog build publish NPM 🐸
-        run: jfrog rt build-publish --project $JF_RT_PROJECT_NAME $JFROG_CLI_BUILD_NAME $JFROG_CLI_BUILD_NUMBER
+      # - name: JFrog build publish NPM 🐸
+      #   run: jfrog rt build-publish --project $JF_RT_PROJECT_NAME $JFROG_CLI_BUILD_NAME $JFROG_CLI_BUILD_NUMBER
       - name: Login to JFrog Docker repo
         uses: docker/login-action@v3
         with:
@@ -74,11 +74,11 @@ jobs:
           jfrog docker image build --tag ${{ env.JF_URL }}/$DOCKER_JF_RT_REPO/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }} --secret id=npmrc,src=$HOME/.npmrc  --build-name $JFROG_CLI_BUILD_NAME --build-number $JFROG_CLI_BUILD_NUMBER --module docker-build --build-arg="REGISTRY_URL=${{ env.JF_URL }}" --build-arg="DOCKER_REPO_NAME=$DOCKER_JF_RT_REPO" --build-arg="NPM_REPO_NAME=$NPM_JF_RT_REPO" .
         env:
           JF_URL: ${{ secrets.JF_PLATFORM_URL }}
-      - name: JFrog docker image scan 🐳🐸
-        run: |
-          jfrog docker scan ${{ env.JF_URL }}/$DOCKER_JF_RT_REPO/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
-        env:
-          JF_URL: ${{ secrets.JF_PLATFORM_URL }}
+      # - name: JFrog docker image scan 🐳🐸
+      #   run: |
+      #     jfrog docker scan ${{ env.JF_URL }}/$DOCKER_JF_RT_REPO/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }}
+      #   env:
+      #     JF_URL: ${{ secrets.JF_PLATFORM_URL }}
       - name: Docker Push 🐳🐸
         run: |
           jfrog docker push ${{ env.JF_URL }}/$DOCKER_JF_RT_REPO/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }} --build-name $JFROG_CLI_BUILD_NAME --build-number $JFROG_CLI_BUILD_NUMBER --module docker-build
@@ -99,4 +99,4 @@ jobs:
       - name: JFrog build scan 🐸
         run: |
           sleep 60
-          jfrog bs $JFROG_CLI_BUILD_NAME $JFROG_CLI_BUILD_NUMBER --vuln=true
+          jfrog bs $JFROG_CLI_BUILD_NAME $JFROG_CLI_BUILD_NUMBER --project $JF_RT_PROJECT_NAME --vuln=true
