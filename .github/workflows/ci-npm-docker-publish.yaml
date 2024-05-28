@@ -71,7 +71,7 @@ jobs:
           password: ${{ secrets.JF_ACCESS_TOKEN }}
       - name: Docker Build 🐳🐸
         run: |
-          jfrog docker image build --tag ${{ env.JF_URL }}/$DOCKER_JF_RT_REPO/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }} --secret id=npmrc,src=$HOME/.npmrc  --build-name $JFROG_CLI_BUILD_NAME --build-number $JFROG_CLI_BUILD_NUMBER --module docker-build --build-arg="REGISTRY_URL=${{ env.JF_URL }}" --build-arg="DOCKER_REPO_NAME=$DOCKER_JF_RT_REPO" --build-arg="NPM_REPO_NAME=$NPM_JF_RT_REPO" .
+          jfrog docker image build --tag ${{ env.JF_URL }}/$DOCKER_JF_RT_REPO/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }} --secret id=npmrc,src=$HOME/.npmrc  --build-name $JFROG_CLI_BUILD_NAME --build-number $JFROG_CLI_BUILD_NUMBER --module docker-build --project $JF_RT_PROJECT_NAME --build-arg="REGISTRY_URL=${{ env.JF_URL }}" --build-arg="DOCKER_REPO_NAME=$DOCKER_JF_RT_REPO" --build-arg="NPM_REPO_NAME=$NPM_JF_RT_REPO" .
         env:
           JF_URL: ${{ secrets.JF_PLATFORM_URL }}
       # - name: JFrog docker image scan 🐳🐸
@@ -81,7 +81,7 @@ jobs:
       #     JF_URL: ${{ secrets.JF_PLATFORM_URL }}
       - name: Docker Push 🐳🐸
         run: |
-          jfrog docker push ${{ env.JF_URL }}/$DOCKER_JF_RT_REPO/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }} --build-name $JFROG_CLI_BUILD_NAME --build-number $JFROG_CLI_BUILD_NUMBER --module docker-build
+          jfrog docker push ${{ env.JF_URL }}/$DOCKER_JF_RT_REPO/demo-node-app:${{ env.NPM_PACKAGE_BUILD_VERSION }} --build-name $JFROG_CLI_BUILD_NAME --build-number $JFROG_CLI_BUILD_NUMBER --module docker-build --project $JF_RT_PROJECT_NAME
         env:
           JF_URL: ${{ secrets.JF_PLATFORM_URL }}
       # - name: JFrog build publish docker 🐸
@@ -95,7 +95,7 @@ jobs:
           jfrog rt build-add-git $JFROG_CLI_BUILD_NAME $JFROG_CLI_BUILD_NUMBER ./ --project $JF_RT_PROJECT_NAME
           jfrog rt build-collect-env $JFROG_CLI_BUILD_NAME $JFROG_CLI_BUILD_NUMBER --project $JF_RT_PROJECT_NAME
       - name: JFrog build publish 🐸
-        run: jfrog rt build-publish --project $JF_RT_PROJECT_NAME $JFROG_CLI_BUILD_NAME $JFROG_CLI_BUILD_NUMBER
+        run: jfrog rt build-publish  $JFROG_CLI_BUILD_NAME $JFROG_CLI_BUILD_NUMBER --project $JF_RT_PROJECT_NAME
       - name: JFrog build scan 🐸
         run: |
           sleep 60
