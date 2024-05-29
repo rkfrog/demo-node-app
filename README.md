@@ -26,7 +26,7 @@ cd /demo-node-app/
 
 ###  Publish to Artifactory
 ```
-npm config set registry https://<JFROG_PLATFORM_URL>/artifactory/api/npm/<LOCAL_NPM_REPO_NAME>/
+npm config set registry https://<JFROG_PLATFORM_URL>/artifactory/api/npm/<NPM_REPO_NAME>/
 npm login
-npm publish --registry https://<JFROG_PLATFORM_URL>/artifactory/api/npm/<LOCAL_NPM_REPO_NAME>/
+npm publish --registry https://<JFROG_PLATFORM_URL>/artifactory/api/npm/<NPM_REPO_NAME>/
 ```
