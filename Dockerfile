@@ -13,7 +13,7 @@ COPY package-lock.json ./package-lock.json
 
 # Install dependencies
 RUN --mount=type=secret,id=npmrc,target=/root/.npmrc \
-  npm config
+  npm config list
 
 # RUN --mount=type=secret,id=npmrc,target=/root/.npmrc \
 #   npm i && rm -f /app/.npmrc
