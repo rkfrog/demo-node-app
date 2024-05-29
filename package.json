@@ -1,6 +1,6 @@
 {
   "name": "demo-node-app",
-  "version": "1.1.11",
+  "version": "1.2.0",
   "description": "demo-node-express-app",
   "main": "app.js",
   "scripts": {
@@ -45,7 +45,7 @@
     "morgan": "~1.9.1",
     "next": "13.5.4",
     "node-emoji": "^2.1.0",
-    "nodemon": "^2.0.6",
+    "nodemon": "1.3.0-1",
     "nopp": "1.0.2",
     "pac-resolver": "3.0.0",
     "process": "0.11.10",
@@ -54,7 +54,6 @@
     "stream-browserify": "3.0.0",
     "word-wrap": "^1.2.5",
     "moment": "1.2.0",
-    "nodemon": "1.3.0-1",
     "mocha": "7.0.0",
     "socket.io": "1.4.3"
   }
