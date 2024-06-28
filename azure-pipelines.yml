@@ -1,0 +1,63 @@
+# Node.js
+# Build a general Node.js project with npm.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '10.x'
+  displayName: 'Install Node.js'
+
+- task: JfrogCliV2@1
+  inputs:
+    jfrogPlatformConnection: 'jf-platform-rk'
+    command: |
+      jf c show
+      jf ping
+
+- task: JFrogNpm@1
+  inputs:
+    command: 'ci'
+    artifactoryConnection: 'jf-rt-rk'
+    sourceRepo: 'frogs-npm-dev-virtual'
+    collectBuildInfo: true
+    threads: '2'
+    buildName: '$(Build.DefinitionName)'
+    buildNumber: '$(Build.BuildNumber)'
+    projectKey: 'frogs-us'
+    includeEnvVars: true
+
+- task: JFrogNpm@1
+  inputs:
+    command: 'pack and publish'
+    artifactoryConnection: 'jf-rt-rk'
+    targetRepo: 'frogs-npm-dev-virtual'
+    collectBuildInfo: true
+    buildName: '$(Build.DefinitionName)'
+    buildNumber: '$(Build.BuildNumber)'
+    projectKey: 'frogs-us'
+    includeEnvVars: true
+
+- task: JFrogPublishBuildInfo@1
+  inputs:
+    artifactoryConnection: 'jf-rt-rk'
+    buildName: '$(Build.DefinitionName)'
+    buildNumber: '$(Build.BuildNumber)'
+    projectKey: 'frogs-us'
+
+# - task: JFrogBuildScan@1
+#   inputs:
+#     xrayConnection: 'jf-xr-rk'
+#     buildName: '$(Build.DefinitionName)'
+#     buildNumber: '$(Build.BuildNumber)'
+#     projectKey: 'frogs-us'
+#     allowFailBuild: false
+#     vuln: true
+
