@@ -10,16 +10,13 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '10.x'
-  displayName: 'Install Node.js'
 
 - task: JfrogCliV2@1
   inputs:
     jfrogPlatformConnection: 'jf-platform-rk'
     command: |
       jf rt ping
+      jf curation audit
 
 - task: JFrogNpm@1
   inputs:
@@ -59,4 +56,3 @@ steps:
 #     projectKey: 'frogs-us'
 #     allowFailBuild: false
 #     vuln: true
-
