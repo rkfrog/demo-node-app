@@ -15,8 +15,10 @@ COPY package-lock.json ./package-lock.json
 # RUN --mount=type=secret,id=npmrc,target=/root/.npmrc \
 #   npm config list
 
+# RUN --mount=type=secret,id=npmrc,target=/root/.npmrc \
+#   npm i && rm -f /app/.npmrc
+
 RUN --mount=type=secret,id=npmrc,target=/root/.npmrc \
-  npm i && rm -f /app/.npmrc
 
 # Get all the code needed to run the app
 COPY . .
