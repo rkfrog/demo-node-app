@@ -16,7 +16,6 @@ steps:
     jfrogPlatformConnection: 'jf-platform-rk'
     command: |
       jf rt ping
-      jf curation audit
 
 - task: JFrogNpm@1
   inputs:
