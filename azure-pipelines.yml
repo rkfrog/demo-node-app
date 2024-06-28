@@ -47,11 +47,15 @@ steps:
     buildNumber: '$(Build.BuildNumber)'
     projectKey: 'frogs-us'
 
-# - task: JFrogBuildScan@1
-#   inputs:
-#     xrayConnection: 'jf-xr-rk'
-#     buildName: '$(Build.DefinitionName)'
-#     buildNumber: '$(Build.BuildNumber)'
-#     projectKey: 'frogs-us'
-#     allowFailBuild: false
-#     vuln: true
+- task: CmdLine@2
+  inputs:
+    script: 'sleep 60'
+
+- task: JFrogBuildScan@1
+  inputs:
+    xrayConnection: 'jf-xr-rk'
+    buildName: '$(Build.DefinitionName)'
+    buildNumber: '$(Build.BuildNumber)'
+    projectKey: 'frogs-us'
+    allowFailBuild: false
+    vuln: true
