@@ -19,8 +19,7 @@ steps:
   inputs:
     jfrogPlatformConnection: 'jf-platform-rk'
     command: |
-      jf c show
-      jf ping
+      jf rt ping
 
 - task: JFrogNpm@1
   inputs:
